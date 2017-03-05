@@ -34,6 +34,9 @@
         <div data-role="main" class="ui-content">
             <p style="text-align: center;">People in the gym</p>
             <input name="peopleInGym" id="numPeople" type="text" maxlength="3" readonly="">
+			<script src="gymPeople.js"></script>
+			<p style="text-align:center;"><img id="busyness" alt="Gym State" title="Gym State" align="middle" /></p>
+			<p style="text-align:center;" id="txtBusyness"></p>
         </div>
         
         <div data-role="footer" data-position="fixed" data-theme="b" data-fullscreen="true">
