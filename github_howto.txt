@@ -1,0 +1,5 @@
+How to commit changes on github
+1. git pull url
+2. git add .
+3. git commit -m "message"
+4. git push origin master
