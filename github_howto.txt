@@ -1,5 +1,6 @@
 How to commit changes on github
 1. git pull url
 2. git add .
+(alternatively you can put a filename instead of .)
 3. git commit -m "message"
 4. git push origin master
