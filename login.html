@@ -18,6 +18,16 @@
     <script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
     <!-- Include the jQuery Mobile library -->
     <script src="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+    <style>
+        h4 {
+            text-align: center;
+        }
+        h1 {
+            text-align: center;
+            font-family: fantasy;
+            font-style: italic;
+        }
+    </style>
 </head>
 
 <body>
@@ -32,7 +42,19 @@
         </div>
         
         <div data-role="main" class="ui-content">
-            <p>login</p>
+            <h1>Login</h1>
+            <form name="main_form">
+                <div>
+                    <input name="email" type="email" placeholder="Email address" maxlength="30">
+                </div>
+                <div>
+                    <input name="password" type="password" placeholder="Password" maxlength="25">
+                </div>
+                <div>
+                    <button> Log In </button>
+                    <h4> Don't have an account? <a href="create_account.html"> Sign up</a></h4>
+                </div>
+            </form>
         </div>
         
         <div data-role="footer" data-position="fixed" data-theme="b" data-fullscreen="true">
@@ -58,6 +80,13 @@
         </div>
         
     </div>
+    <!--<script>
+        function login() {
+            var userName = document.forms.main_form.email.value;
+            var pass = document.forms.main_form.password.value;
+            
+        }
+    </script>-->
 </body>
 
 </html>

@@ -17,6 +17,13 @@
     <script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
     <!-- Include the jQuery Mobile library -->
     <script src="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+    <style>
+        h1 {
+            text-align: center;
+            font-family: fantasy;
+            font-style: italic;
+        }
+    </style>
 </head>
 
 <body>
@@ -31,7 +38,25 @@
         </div>
         
         <div data-role="main" class="ui-content">
-            <p>create account</p>
+            <h1>Create New Account</h1>
+            <form name="main_form">
+                <div>
+                    <input name="email" type="email" placeholder="E-mail" maxlength="30">
+                </div>
+                <div>
+                    <input name="rEmail" type="email" placeholder="Repeat E-mail" maxlength="30">
+                </div>
+                <div>
+                    <input name="password" type="password" placeholder="Password" maxlength="25">
+                </div>
+                <div>
+                    <input name="rPassword" type="password" placeholder="Repeat Password" maxlength="25">
+                </div>
+                <div>
+                    <button>Submit</button>
+                </div>
+
+            </form>        
         </div>
         
         <div data-role="footer" data-position="fixed" data-theme="b" data-fullscreen="true">
@@ -57,6 +82,25 @@
         </div>
         
     </div>
+    <!--<script>
+        function createAcc() {
+            var email = document.forms.main_form.email.value;
+            var rEmail = document.forms.main_form.rEmail.value;
+            var pass = document.forms.main_form.password.value;
+            var rPass = document.forms.main_form.rPassword.value;
+
+            if (email == "" || pass == "") {
+                alert("Email and password fields must be filled in!");
+            } else {
+                if (email != rEmail) {
+                    alert("Emails must match");
+                } else if (pass != rPass) {
+                    alert("Passwords must match");
+                }
+            }
+            
+        }
+    </script>-->
 </body>
 
 </html>
