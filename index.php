@@ -13,57 +13,329 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css">
     <link rel="stylesheet" href="dom.selectizing.css">
+    <link href="style.css" rel="stylesheet" />
     <!-- Include the jQuery library -->
     <script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
     <!-- Include the jQuery Mobile library -->
     <script src="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+    <script type="text/javascript" src="script.js"></script>
 </head>
 
 <body>
+    <!--INDEX PAGE-->
     <div data-role="page" id="index">
-        
         <div data-role="header" data-theme="b">
             <h2 class="ui-title" role="heading">
 				<a href="index.php">
-					<img src="Images/Logo.png" alt="FitIn">
+					<img src="Images/Logo.png" style="width:50%; height:50%;" alt="FitIn">
 				</a>
 			</h2>
-            <a href="#hidden_panel" class="ui-btn ui-shadow ui-corner-all ui-icon-bars ui-btn-a ui-btn-icon-notext"></a>
+            <a href="#hidden_panel1" class="ui-btn ui-shadow ui-corner-all ui-icon-bars ui-btn-a ui-btn-icon-notext"></a>
         </div>
-        
         <div data-role="main" class="ui-content">
             <p style="text-align: center;">People in the gym</p>
             <input name="peopleInGym" id="numPeople" type="text" maxlength="3" readonly="">
 			<script src="gymPeople.js"></script>
-			<p style="text-align:center;"><img id="busyness" alt="Gym State" title="Gym State" align="middle" /></p>
+			<p style="text-align:center;">
+                <img id="busyness" style="width: 70%;" alt="Gym State" title="Gym State" align="middle" />
+            </p>
 			<p style="text-align:center;" id="txtBusyness"></p>
+        </div>
+        <script src="https://spreadsheets.google.com/feeds/cells/1l-Xu3gIB79VKZ2VUSxT817G0zBltpkpOvuNcwsyW-1A/od6/public/basic?range=A2&alt=json-in-script&callback=Data"></script>
+        <div data-role="footer" data-position="fixed" data-theme="b" data-fullscreen="true">
+            <small>&#169;FitIn</small>
+        </div>
+        
+        <div data-role="panel" id="hidden_panel1" data-display="push">
+            <div class="ui-panel-inner">
+                <ul data-role="listview" data-theme="b">
+                    <li data-role="list-divider">Menu</li>
+                    <li><a href="#timeline">Predictions</a></li>
+                    <li><a href="#timeline">Advised Times</a></li>
+                    <li><a href="#timeline">History</a></li>
+                    <li><a href="#timetable">Timetable</a></li>
+                    <li data-role="list-divider">Account Options</li>
+                    <li><a href="#login">Login</a></li>
+                    <li><a href="#create_account">New Account</a></li>
+                    <li><a href="#edit_account">Edit Account</a></li>
+                </ul>
+            </div>
+        </div>
+        
+    </div>
+    <!--INDEX PAGE OVER-->
+
+    <!--LOGIN PAGE-->
+    <div data-role="page" id="login">
+        <script src="loginCheck.js">refreshPage();</script>
+        <div data-role="header" data-theme="b">
+            <h2 class="ui-title" role="heading">
+				<a href="index.php">
+					<img src="Images/Logo.png" style="width:50%; height:50%;" alt="FitIn">
+				</a>
+			</h2>
+            <a href="#hidden_panel2" class="ui-btn ui-shadow ui-corner-all ui-icon-bars ui-btn-a ui-btn-icon-notext"></a>
+        </div>
+        
+        <div data-role="main" class="ui-content">
+            <h1 style="text-align: center; font-style: italic">Login</h1>
+            <form name="main_form" id="main_form">
+                <div>
+                    <input name="email" id="email" type="email" placeholder="Email address" maxlength="30">
+                    <input name="password" id="password" type="password" placeholder="Password" maxlength="25">
+                    <fieldset data-role="controlgroup">
+                        <input type="checkbox" name="chck-rememberme" id="chck-rememberme" checked="">
+                        <label for="chck-rememberme">Remember me</label>
+                    </fieldset>
+                    <input type="submit" id="submit" name="submit" value="Login">
+                </div>
+                <div>
+                    <div data-role="popup" id="loginEmpty" data-dismissible="false" style="max-width:400px;">
+                        <div data-role="header">
+                            <h1>Error</h1>
+                        </div>
+                        <div role="main" class="ui-content">
+                            <h3>Enter email and/or password</h3>
+                            <div class="mc-text-center"><a href="#loginEmpty" data-role="button" class="ui-icon-alt">OK</a></div>
+                        </div>
+                    </div>
+                    <h4 style="text-align:center" class="mc-top-margin-1-5"> Don't have an account? <a href="#create_account"> Sign up</a></h4>
+                    <div data-role="popup" id="loginInvalid" data-dismissible="false" style="max-width:400px;">
+                         <div data-role="header">
+                            <h1 class="mc-text-danger">Login Failed</h1>
+                         </div>    
+                         <div role="main" class="ui-content">
+                            <h3>Email and/or password entered is invalid.</h3>
+                            <div class="mc-text-center"><a href="#loginInvalid" data-role="button" class="ui-icon-alt">OK</a></div>
+                         </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+        
+        <div data-role="footer" data-position="fixed" data-theme="b" data-fullscreen="true">
+            <small>&#169;FitIn</small>
+        </div>
+        <div data-role="panel" id="hidden_panel2" data-display="push">
+            <div class="ui-panel-inner">
+                <ul data-role="listview" data-theme="b">
+                    <li data-role="list-divider">Menu</li>
+                    <li><a href="#index">Current Space</a></li>
+                    <li><a href="#timeline">Predictions</a></li>
+                    <li><a href="#timeline">Advised Times</a></li>
+                    <li><a href="#timeline">History</a></li>
+                    <li><a href="#timetable">Timetable</a></li>
+                    <li data-role="list-divider">Account Options</li>
+                    <li><a href="#create_account">New Account</a></li>
+                    <li><a href="#edit_account">Edit Account</a></li>
+                </ul>
+            </div>
+        </div>
+        
+    </div>
+    <!--LOGIN PAGE OVER-->
+
+    <!--NEW ACCOUNT PAGE-->
+    <div data-role="page" id="create_account">
+        <script src="userAccount.js">refreshPage();</script>
+        <div data-role="header" data-theme="b">
+            <h2 class="ui-title" role="heading">
+				<a href="index.php">
+					<img src="Images/Logo.png" style="width:50%; height:50%;" alt="FitIn">
+				</a>
+			</h2>
+            <a href="#hidden_panel3" class="ui-btn ui-shadow ui-corner-all ui-icon-bars ui-btn-a ui-btn-icon-notext"></a>
+        </div>
+        
+        <div data-role="main" class="ui-content">
+            <h1 style="text-align: center; font-style: italic;">Create New Account</h1>
+            <form name="frmAcc" id="frmAcc" method="post">
+                <input name="accEmail" id="accEmail" type="email" placeholder="E-mail" maxlength="30">
+                <input name="accrEmail" id="accrEmail" type="email" placeholder="Repeat E-mail" maxlength="30">
+                <input name="accPassword" id="accPassword" type="password" placeholder="Password" maxlength="25">
+                <input name="accrPassword" id="accrPassword" type="password" placeholder="Repeat Password" maxlength="25">
+                <input type="submit" id="accSubmit" name="accSubmit" value="Submit">
+                <div data-role="popup" id="accSuccess" data-dismissible="false" style="max-width:400px;">
+                    <div data-role="header">
+                        <h1>Success</h1>
+                    </div>
+                    <div role="main" class="ui-content">
+                        <h3>Account created!</h3>
+                        <div class="mc-text-center"><a href="#login" class="ui-btn ui-corner-all ui-shadow ui-btn-b mc-top-margin-1-5">OK</a></div>
+                    </div>
+                </div>
+                <div data-role="popup" id="accWrong" data-dismissible="false" style="max-width:400px;">
+                    <div data-role="header">
+                        <h1>Fail</h1>
+                    </div>
+                    <div role="main" class="ui-content">
+                        <h3>Emails and/or passwords do not match.</h3>
+                        <div class="mc-text-center"><a href="#accWrong" data-role="button" class="ui-icon-alt">OK</a></div>
+                    </div>
+                </div>
+                <div data-role="popup" id="accEmpty" data-dismissible="false" style="max-width:400px;">
+                    <div data-role="header">
+                        <h1>Fail</h1>
+                    </div>
+                    <div role="main" class="ui-content">
+                        <h3>All fields must be filled in.</h3>
+                        <div class="mc-text-center"><a href="#accEmpty" data-role="button" class="ui-icon-alt">OK</a></div>
+                    </div>
+                </div>
+                <div data-role="popup" id="accExists" data-dismissible="false" style="max-width:400px;">
+                    <div data-role="header">
+                        <h1>Account Taken</h1>
+                    </div>
+                    <div role="main" class="ui-content">
+                        <h3>This email address is already in use.</h3>
+                        <div class="mc-text-center"><a href="#accExists" data-role="button" class="ui-icon-alt">OK</a></div>
+                    </div>
+                </div>
+            </form>
         </div>
         
         <div data-role="footer" data-position="fixed" data-theme="b" data-fullscreen="true">
             <small>&#169;FitIn</small>
         </div>
         
-        <div data-role="panel" id="hidden_panel" data-display="push">
+        <div data-role="panel" id="hidden_panel3" data-display="push">
             <div class="ui-panel-inner">
                 <ul data-role="listview" data-theme="b">
                     <li data-role="list-divider">Menu</li>
-                    <li><a href="index.php">Current Space</a></li>
-                    <li><a href="timeline.html">Predictions</a></li>
-                    <li><a href="timeline.html">Advised Times</a></li>
-                    <li><a href="timeline.html">History</a></li>
-                    <li><a href="timetable.html">Timetable</a></li>
+                    <li><a href="#index">Current Space</a></li>
+                    <li><a href="#timeline">Predictions</a></li>
+                    <li><a href="#timeline">Advised Times</a></li>
+                    <li><a href="#timeline">History</a></li>
+                    <li><a href="#timetable">Timetable</a></li>
                     <li data-role="list-divider">Account Options</li>
-                    <li><a href="login.html">Login</a></li>
-                    <li><a href="create_account.html">New Account</a></li>
-                    <li><a href="edit_account.html">Edit Account</a></li>
-                    <li><a href="edit_timetable.html">Edit Timetable</a></li>
+                    <li><a href="#login">Login</a></li>
+                    <li><a href="#edit_account">Edit Account</a></li>
                 </ul>
             </div>
         </div>
         
     </div>
-	<script src="https://spreadsheets.google.com/feeds/cells/1l-Xu3gIB79VKZ2VUSxT817G0zBltpkpOvuNcwsyW-1A/od6/public/basic?range=A2&alt=json-in-script&callback=Data">
-	</script>
+    <!--NEW ACCOUNT PAGE OVER-->
+
+    <!--EDIT ACCOUNT PAGE-->
+    <div data-role="page" id="edit_account">
+        <div data-role="header" data-theme="b">
+            <h2 class="ui-title" role="heading">
+				<a href="index.php">
+					<img src="Images/Logo.png" style="width:50%; height:50%;" alt="FitIn">
+				</a>
+			</h2>
+            <a href="#hidden_panel4" class="ui-btn ui-shadow ui-corner-all ui-icon-bars ui-btn-a ui-btn-icon-notext"></a>
+
+        </div>
+        
+        <div data-role="main" class="ui-content">
+            <p>edit account</p>
+        </div>
+        
+        <div data-role="footer" data-position="fixed" data-theme="b" data-fullscreen="true">
+            <small>&#169;FitIn</small>
+        </div>
+        
+        <div data-role="panel" id="hidden_panel4" data-display="push">
+            <div class="ui-panel-inner">
+                <ul data-role="listview" data-theme="b">
+                    <li data-role="list-divider">Menu</li>
+                    <li><a href="#index">Current Space</a></li>
+                    <li><a href="#timeline">Predictions</a></li>
+                    <li><a href="#timeline">Advised Times</a></li>
+                    <li><a href="#timeline">History</a></li>
+                    <li><a href="#timetable">Timetable</a></li>
+                    <li data-role="list-divider">Account Options</li>
+                    <li><a href="#login">Login</a></li>
+                    <li><a href="#create_account">New Account</a></li>
+                </ul>
+            </div>
+        </div>
+        
+    </div>
+    <!--EDIT ACCOUNT PAGE OVER-->
+
+    <!--TIMETABLE PAGE-->
+    <div data-role="page" id="timetable">
+        <div data-role="header" data-theme="b">
+            <h2 class="ui-title" role="heading">
+				<a href="index.php">
+					<img src="Images/Logo.png" style="width:50%; height:50%;" alt="FitIn">
+				</a>
+			</h2>
+            <a href="#hidden_panel5" class="ui-btn ui-shadow ui-corner-all ui-icon-bars ui-btn-a ui-btn-icon-notext"></a>
+        </div>
+        
+        <div data-role="main" class="ui-content">
+            <h1>Timetable</h1>
+            
+            <div class="all">
+                <div class="tableClass">
+                    <canvas id="table" width="500" height="200"></canvas>
+                </div>
+            </div>
+            
+        </div>
+        
+        <div data-role="footer" data-position="fixed" data-theme="b" data-fullscreen="true">
+            <small>&#169;FitIn</small>
+        </div>
+        
+        <div data-role="panel" id="hidden_panel5" data-display="push">
+            <div class="ui-panel-inner">
+                <ul data-role="listview" data-theme="b">
+                    <li data-role="list-divider">Menu</li>
+                    <li><a href="#index">Current Space</a></li>
+                    <li><a href="#timeline">Predictions</a></li>
+                    <li><a href="#timeline">Advised Times</a></li>
+                    <li><a href="#timeline">History</a></li>
+                    <li data-role="list-divider">Account Options</li>
+                    <li><a href="#login">Login</a></li>
+                    <li><a href="#create_account">New Account</a></li>
+                    <li><a href="#edit_account">Edit Account</a></li>
+                </ul>
+            </div>
+        </div>
+        
+    </div>
+    <!--TIMETABLE PAGE OVER-->
+
+    <!--TIMELINE PAGE-->
+    <div data-role="page" id="timeline">
+        <div data-role="header" data-theme="b">
+            <h2 class="ui-title" role="heading">
+				<a href="index.php">
+					<img src="Images/Logo.png" style="width:50%; height:50%;" alt="FitIn">
+				</a>
+			</h2>
+            <a href="#hidden_panel6" class="ui-btn ui-shadow ui-corner-all ui-icon-bars ui-btn-a ui-btn-icon-notext"></a>
+        </div>
+        
+        <div data-role="main" class="ui-content">
+            <p>timeline</p>        
+        </div>
+        
+        <div data-role="footer" data-position="fixed" data-theme="b" data-fullscreen="true">
+            <small>&#169;FitIn</small>
+        </div>
+        
+        <div data-role="panel" id="hidden_panel6" data-display="push">
+            <div class="ui-panel-inner">
+                <ul data-role="listview" data-theme="b">
+                    <li data-role="list-divider">Menu</li>
+                    <li><a href="#index">Current Space</a></li>
+                    <li><a href="#timetable">Timetable</a></li>
+                    <li data-role="list-divider">Account Options</li>
+                    <li><a href="#login">Login</a></li>
+                    <li><a href="#create_account">New Account</a></li>
+                    <li><a href="#edit_account">Edit Account</a></li>
+                </ul>
+            </div>
+        </div>
+        
+    </div>
+    <!--TIMELINE PAGE OVER-->
 </body>
 
 </html>

@@ -13,21 +13,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css">
     <link rel="stylesheet" href="dom.selectizing.css">
+    <link href="style.css" rel="stylesheet" />
     <!-- Include the jQuery library -->
     <script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
     <!-- Include the jQuery Mobile library -->
     <script src="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
-    <style>
-        h1 {
-            text-align: center;
-            font-family: fantasy;
-            font-style: italic;
-        }
-    </style>
 </head>
 
 <body>
     <div data-role="page" id="create_account">
+        <script src="userAccount.js">refreshPage();</script>
         <div data-role="header" data-theme="b">
             <h2 class="ui-title" role="heading">
 				<a href="index.php">
@@ -38,25 +33,50 @@
         </div>
         
         <div data-role="main" class="ui-content">
-            <h1>Create New Account</h1>
-            <form name="main_form">
-                <div>
-                    <input name="email" type="email" placeholder="E-mail" maxlength="30">
+            <h1 style="text-align: center; font-style: italic;">Create New Account</h1>
+            <form name="main_form" id="main_form" method="post">
+                <input name="email" id="email" type="email" placeholder="E-mail" maxlength="30">
+                <input name="rEmail" id="rEmail" type="email" placeholder="Repeat E-mail" maxlength="30">
+                <input name="password" id="password" type="password" placeholder="Password" maxlength="25">
+                <input name="rPassword" id="rPassword" type="password" placeholder="Repeat Password" maxlength="25">
+                <input type="submit" id="submit" name="submit" value="Submit">
+                <div data-role="popup" id="accSuccess" data-dismissible="false" style="max-width:400px;">
+                    <div data-role="header">
+                        <h1>Success</h1>
+                    </div>
+                    <div role="main" class="ui-content">
+                        <h3>Account created!</h3>
+                        <div class="mc-text-center"><a href="login.html" class="ui-btn ui-corner-all ui-shadow ui-btn-b mc-top-margin-1-5">OK</a></div>
+                    </div>
                 </div>
-                <div>
-                    <input name="rEmail" type="email" placeholder="Repeat E-mail" maxlength="30">
+                <div data-role="popup" id="accWrong" data-dismissible="false" style="max-width:400px;">
+                    <div data-role="header">
+                        <h1>Fail</h1>
+                    </div>
+                    <div role="main" class="ui-content">
+                        <h3>Emails and/or passwords do not match.</h3>
+                        <div class="mc-text-center"><a href="#accWrong" data-role="button" class="ui-icon-alt">OK</a></div>
+                    </div>
                 </div>
-                <div>
-                    <input name="password" type="password" placeholder="Password" maxlength="25">
+                <div data-role="popup" id="accEmpty" data-dismissible="false" style="max-width:400px;">
+                    <div data-role="header">
+                        <h1>Fail</h1>
+                    </div>
+                    <div role="main" class="ui-content">
+                        <h3>All fields must be filled in.</h3>
+                        <div class="mc-text-center"><a href="#accEmpty" data-role="button" class="ui-icon-alt">OK</a></div>
+                    </div>
                 </div>
-                <div>
-                    <input name="rPassword" type="password" placeholder="Repeat Password" maxlength="25">
+                <div data-role="popup" id="accExists" data-dismissible="false" style="max-width:400px;">
+                    <div data-role="header">
+                        <h1>Account Taken</h1>
+                    </div>
+                    <div role="main" class="ui-content">
+                        <h3>This email address is already in use.</h3>
+                        <div class="mc-text-center"><a href="#accExists" data-role="button" class="ui-icon-alt">OK</a></div>
+                    </div>
                 </div>
-                <div>
-                    <button>Submit</button>
-                </div>
-
-            </form>        
+            </form>
         </div>
         
         <div data-role="footer" data-position="fixed" data-theme="b" data-fullscreen="true">
@@ -82,25 +102,6 @@
         </div>
         
     </div>
-    <!--<script>
-        function createAcc() {
-            var email = document.forms.main_form.email.value;
-            var rEmail = document.forms.main_form.rEmail.value;
-            var pass = document.forms.main_form.password.value;
-            var rPass = document.forms.main_form.rPassword.value;
-
-            if (email == "" || pass == "") {
-                alert("Email and password fields must be filled in!");
-            } else {
-                if (email != rEmail) {
-                    alert("Emails must match");
-                } else if (pass != rPass) {
-                    alert("Passwords must match");
-                }
-            }
-            
-        }
-    </script>-->
 </body>
 
 </html>

@@ -25,4 +25,4 @@
 		txtBusyness = "Free";
 	}
 	document.getElementById("txtBusyness").innerHTML = txtBusyness;
-}
+ }

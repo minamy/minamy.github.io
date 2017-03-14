@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html>
 <head>
-    
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta http-equiv="pragma" content="no-cache" />
     <meta http-equiv="expires" content="Thu, 31 Dec 2020 23:59:59 GMT" />
@@ -14,24 +13,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css">
     <link rel="stylesheet" href="dom.selectizing.css">
+    <link href="style.css" rel="stylesheet" />
     <!-- Include the jQuery library -->
     <script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
     <!-- Include the jQuery Mobile library -->
     <script src="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
-    <style>
-        h4 {
-            text-align: center;
-        }
-        h1 {
-            text-align: center;
-            font-family: fantasy;
-            font-style: italic;
-        }
-    </style>
 </head>
 
 <body>
     <div data-role="page" id="login">
+        <script src="loginCheck.js">refreshPage();</script>
         <div data-role="header" data-theme="b">
             <h2 class="ui-title" role="heading">
 				<a href="index.php">
@@ -42,17 +33,37 @@
         </div>
         
         <div data-role="main" class="ui-content">
-            <h1>Login</h1>
-            <form name="main_form">
+            <h1 style="text-align: center; font-style: italic">Login</h1>
+            <form name="main_form" id="main_form">
                 <div>
-                    <input name="email" type="email" placeholder="Email address" maxlength="30">
+                    <input name="email" id="email" type="email" placeholder="Email address" maxlength="30">
+                    <input name="password" id="password" type="password" placeholder="Password" maxlength="25">
+                    <fieldset data-role="controlgroup">
+                        <input type="checkbox" name="chck-rememberme" id="chck-rememberme" checked="">
+                        <label for="chck-rememberme">Remember me</label>
+                    </fieldset>
+                    <input type="submit" id="submit" name="submit" value="Login">
                 </div>
                 <div>
-                    <input name="password" type="password" placeholder="Password" maxlength="25">
-                </div>
-                <div>
-                    <button> Log In </button>
-                    <h4> Don't have an account? <a href="create_account.html"> Sign up</a></h4>
+                    <div data-role="popup" id="loginEmpty" data-dismissible="false" style="max-width:400px;">
+                        <div data-role="header">
+                            <h1>Error</h1>
+                        </div>
+                        <div role="main" class="ui-content">
+                            <h3>Enter email and/or password</h3>
+                            <div class="mc-text-center"><a href="#loginEmpty" data-role="button" class="ui-icon-alt">OK</a></div>
+                        </div>
+                    </div>
+                    <h4 style="text-align:center" class="mc-top-margin-1-5"> Don't have an account? <a href="create_account.html"> Sign up</a></h4>
+                    <div data-role="popup" id="loginInvalid" data-dismissible="false" style="max-width:400px;">
+                         <div data-role="header">
+                            <h1 class="mc-text-danger">Login Failed</h1>
+                         </div>    
+                         <div role="main" class="ui-content">
+                            <h3>Email and/or password entered is invalid.</h3>
+                            <div class="mc-text-center"><a href="#loginInvalid" data-role="button" class="ui-icon-alt">OK</a></div>
+                         </div>
+                    </div>
                 </div>
             </form>
         </div>
@@ -63,7 +74,7 @@
         
         <div data-role="panel" id="hidden_panel_login" data-display="push">
             <div class="ui-panel-inner">
-                <ul data-role="listview" data-theme="b">
+                <ul data-role="listview" data-theme="b" id="pageLink">
                     <li data-role="list-divider">Menu</li>
                     <li><a href="index.php">Current Space</a></li>
                     <li><a href="timeline.html">Predictions</a></li>
@@ -80,13 +91,6 @@
         </div>
         
     </div>
-    <!--<script>
-        function login() {
-            var userName = document.forms.main_form.email.value;
-            var pass = document.forms.main_form.password.value;
-            
-        }
-    </script>-->
 </body>
 
 </html>
