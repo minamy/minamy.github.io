@@ -5,7 +5,7 @@ var canvasheight;
 
 function drawVerticalLine() {
     var w = 53;
-    while (w <= 490) {
+    while (w <= 500) {
         c.moveTo(w, 5);
         c.lineTo(w, canvasheight);
         c.stroke();
