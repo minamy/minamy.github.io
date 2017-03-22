@@ -23,16 +23,12 @@ h3.mc-text-danger  {
 .tableClass{
 	border: 1px solid #000000;
 	background-color: #ffffff;
-	width: 100%;
-	height: 100%;
 	margin: 0px;
-    overflow-y:scroll;
     overflow: scroll;
 }
 
 #table{
-    width: 600px;
-	height: 400px;
+    width: 650px;
+	height: 220px;
     margin: 0px;
-    overflow-y:scroll;
 }
