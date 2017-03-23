@@ -272,10 +272,10 @@
             
             <div class="all">
                 <div class="tableClass">
-                    <canvas id="table" width="500" height="200"></canvas>
+                    <canvas id="table" width="530" height="180"></canvas>
                 </div>
             </div>
-            
+            <button class="ui-btn" id="submitBool" data-theme="b">Submit</button>
         </div>
         
         <div data-role="footer" data-position="fixed" data-theme="b" data-fullscreen="true">

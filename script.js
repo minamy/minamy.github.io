@@ -77,7 +77,7 @@ function booleanTable() {
 }
 
 function sendBools() {
-    
+    var data = JSON.stringify({value: "setTimetable", table: array});
 }
 
 function touched(canvas, c, event) {
