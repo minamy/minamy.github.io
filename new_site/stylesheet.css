@@ -1,0 +1,90 @@
+*{
+	box-sizing: border-box;
+	margin: 0px;
+}
+
+body {
+	background-color: white;
+	text-align: center;
+	width: auto;
+	margin: 0;
+	user-select: none;
+    overflow-x: hidden;
+    overflow-y: hidden;
+	font-family: Tahoma;
+}
+
+.title{
+	background-color: magenta;
+	--height: 100px;
+	height: var(--height);
+	
+}
+
+.main {
+	border: none;
+	width: auto;
+	height: 80%;
+	margin: calc(var(--height)/10);
+	float: left;
+}
+
+.logo {
+	border: none;
+	width: auto;
+	height: 100%;
+}
+
+.settings {
+	border: none;
+	width: auto;
+	height: 75%;
+	margin: calc(var(--height)/8);
+	float: right;
+}
+
+.mainmenu{
+	height: 100%;
+    width: 250px;
+    position: fixed;
+    z-index: 1;
+    top: var(--height);
+    left: -250px;
+    background-color: magenta;
+    overflow-x: hidden;
+    transition: 0.5s;
+}
+
+.mainmenu a {
+    padding: 8px 8px 8px 32px;
+    text-decoration: none;
+    font-size: 30px;
+    color: #000;
+    display: block;
+    transition: 0.3s
+}
+
+.usermenu{
+	height: 100%;
+    width: 250px;
+    position: fixed;
+    z-index: 1;
+    top: var(--height);
+    right: -250px;
+    background-color: magenta;
+    overflow-x: hidden;
+    transition: 0.5s;
+}
+
+.usermenu a {
+    padding: 8px 8px 8px 32px;
+    text-decoration: none;
+    font-size: 30px;
+    color: #000;
+    display: block;
+    transition: 0.3s
+}
+
+.menu a:hover, .offcanvas a:focus{
+    background-color: #c0c;
+}

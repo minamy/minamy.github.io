@@ -19,6 +19,7 @@
     <!-- Include the jQuery Mobile library -->
     <script src="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
     <script type="text/javascript" src="script.js"></script>
+	<script type="text/javascript" src="timeline.js"></script>
 </head>
 
 <body>
@@ -313,7 +314,7 @@
         </div>
         
         <div data-role="main" class="ui-content">
-            <p>timeline</p>        
+            <canvas id="timelinecanvas" width="300" height="500"/>    
         </div>
         
         <div data-role="footer" data-position="fixed" data-theme="b" data-fullscreen="true">
