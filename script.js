@@ -135,4 +135,7 @@ function begin() {
     booleanTable();
     drawTable();
 }
-setTimeout(begin, 100);
+document.addEventListener('DOMContentLoaded',domloaded,false);
+function domloaded(){
+    begin();
+}
