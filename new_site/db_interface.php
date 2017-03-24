@@ -22,6 +22,7 @@
 			fwrite($output, "Failure
 			");
 		}
+		mysqli_close($link);
 	} else if ($request == "addhistory"){
 		$time = $input->time;
 		$people = $input->people;
@@ -41,6 +42,7 @@
 			fwrite($output, "Failure
 			");
 		}
+		mysqli_close($link);
 	} else if ($request == "gethistory"){
 		$link = connect();
 		$query = "SELECT * FROM `History` ORDER BY `Time`";
@@ -52,8 +54,8 @@
 			$i++;
 		}
 		fwrite($output, json_encode($array));
+		mysqli_close($link);
 	}
-    mysqli_close($link);
 	fclose($output);
 	
 	function connect(){

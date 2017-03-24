@@ -15,7 +15,7 @@ body {
 }
 
 .title{
-	background-color: magenta;
+	background-color: steelblue;
 	--height: 100px;
 	height: var(--height);
 	
@@ -27,6 +27,7 @@ body {
 	height: 80%;
 	margin: calc(var(--height)/10);
 	float: left;
+    cursor: pointer;
 }
 
 .logo {
@@ -41,6 +42,7 @@ body {
 	height: 75%;
 	margin: calc(var(--height)/8);
 	float: right;
+    cursor: pointer;
 }
 
 .mainmenu{
@@ -50,7 +52,7 @@ body {
     z-index: 1;
     top: var(--height);
     left: -250px;
-    background-color: magenta;
+    background-color: #7eaacd;
     overflow-x: hidden;
     transition: 0.5s;
 }
@@ -59,7 +61,7 @@ body {
     padding: 8px 8px 8px 32px;
     text-decoration: none;
     font-size: 30px;
-    color: #000;
+    color: black;
     display: block;
     transition: 0.3s
 }
@@ -71,7 +73,7 @@ body {
     z-index: 1;
     top: var(--height);
     right: -250px;
-    background-color: magenta;
+    background-color: #7eaacd;
     overflow-x: hidden;
     transition: 0.5s;
 }
@@ -80,11 +82,12 @@ body {
     padding: 8px 8px 8px 32px;
     text-decoration: none;
     font-size: 30px;
-    color: #000;
+    color: black;
     display: block;
     transition: 0.3s
 }
 
 .menu a:hover, .offcanvas a:focus{
-    background-color: #c0c;
+    background-color: #b6cee2;
+    cursor: pointer;
 }

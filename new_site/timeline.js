@@ -353,6 +353,20 @@ function draw(){
 	c.fillText(date, -10, 10);
 	c.fillText(time, (c.measureText(date).width - c.measureText(time).width)/2 - 10, fsize + 20);
 	c.restore();
+	fsize = parseInt(bounds.x/2);
+ 	c.font = fsize+"px Tahoma";
+ 	var text = "Empty";
+ 	c.save();
+ 	c.translate(bounds.x + 20, 10);
+ 	c.rotate(Math.PI / 2);
+ 	c.fillText(text, 0, 0);
+ 	c.restore();
+ 	text = "Full";
+	c.save();
+ 	c.translate(bounds.x + bounds.w - fsize, 10);
+ 	c.rotate(Math.PI / 2);
+ 	c.fillText(text, 0, 0);
+	c.restore();
 }
 
 function clock(){

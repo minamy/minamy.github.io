@@ -1,1 +1,0 @@
-"# minamy.github.io" 
