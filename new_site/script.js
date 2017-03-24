@@ -50,9 +50,4 @@ document.addEventListener("DOMContentLoaded", function(e){
 		}
 	});
 	logOut();
-<<<<<<< HEAD
 });
-=======
-});
-
->>>>>>> 201e91638609ceb7ff66d1bb05f3307033e98dd2
