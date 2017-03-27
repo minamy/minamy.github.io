@@ -63,7 +63,7 @@ function fillTiles(){
     for (var i = 0; i < rows; i++){
         for (var j = 0; j < 7; j++){
             if (array[i][j]){
-                c.fillRect((i+4)*columnWidth+offsetX, (j+1)*rowWidth+offsetY, columnWidth, rowWidth)
+                c.fillRect((i+4)*columnWidth+offsetX-1, (j+1)*rowWidth+offsetY-1, columnWidth+2, rowWidth+2)
             }
         }
     }
