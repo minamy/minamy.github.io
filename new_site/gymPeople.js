@@ -1,3 +1,4 @@
+function update(){
 	var req = new XMLHttpRequest();
 	req.open('GET', 'people.php');
 	req.onload = function() {
@@ -31,3 +32,6 @@
 		}
 	};
 	req.send();
+}
+update();
+setInterval(update, 5000);

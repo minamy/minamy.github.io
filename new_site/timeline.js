@@ -36,6 +36,38 @@ var but = -1;
 var advice = false;
 
 
+function updateHistory(){
+	//DO POST
+	var data = JSON.stringify({ value: "gethistory" });
+	var request = new XMLHttpRequest();
+	request.open('POST', 'db_interface.php');
+	//request.responseType = "json";
+	request.setRequestHeader('Content-Type', 'application/json');
+	request.onreadystatechange = function() {
+		if (request.status >= 200 && request.status < 400) {
+			// Success!
+			if (request.readyState == 4) {
+				var resp = JSON.parse(request.response);
+				st = [];
+				sd = [];
+				for (var i = 0; i < resp.length; i++){
+					st[i] = (new Date(resp[i][0]))/60000;
+					sd[i] = parseInt(resp[i][1]);
+				}
+				s.time = st;
+				s.data = sd;
+				s.length = resp.length;
+				draw();
+			}
+		} else {
+			// We reached our target server, but it returned an error
+			s = generateSeries(1000);
+		}
+	};
+	request.send(data);
+	//NO JQUERY
+}
+
 function getHistory(){
 	//DO POST
 	var data = JSON.stringify({ value: "gethistory" });
@@ -428,6 +460,7 @@ function begin(){
 	window.onresize({});
 	draw();
 	setInterval(clock, 18);
+	setInterval(updateHistory, 60000);
 }
 
 getHistory();
