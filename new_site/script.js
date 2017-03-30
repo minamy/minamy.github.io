@@ -39,25 +39,16 @@ function logOut(){
 document.addEventListener("DOMContentLoaded", function(e){
 	document.addEventListener("click", function(e){
 		element = e.target;
-		if (e.path != null){
-			if(!(e.path.filter(function(element){
-				return element.parentElement.id=="mainmenu" || element.id=="menbut";
-			}).length)){
-				document.getElementById("mainmenu").style.left = "-250px";
-			}
-			if(!(e.path.filter(function(element){
-				return element.id=="usermenu" || element.id=="setbut";
-			}).length)){
-				document.getElementById("usermenu").style.right = "-250px";
-			}
-		} else {
-			if (element.parentElement == null || !(element.parentElement.id=="mainmenu" || element.id=="menbut")){
-				document.getElementById("mainmenu").style.left = "-250px";
-			}
-			if (element.parentElement == null || !(element.parentElement.id=="usermenu" || element.id=="setbut")){
-				document.getElementById("usermenu").style.right = "-250px";
-			}
+		if (element.parentElement == null || !(element.parentElement.id=="mainmenu" || element.id=="menbut")){
+			document.getElementById("mainmenu").style.left = "-250px";
+		}
+		if (element.parentElement == null || !(element.parentElement.id=="usermenu" || element.id=="setbut")){
+			document.getElementById("usermenu").style.right = "-250px";
 		}
 	});
-	logOut();
+	if (loggedIn){
+		logIn();
+	} else {
+		logOut();
+	}
 });

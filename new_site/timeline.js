@@ -292,7 +292,7 @@ function mout(e){
 }
 
 function mwheel(e){
-	var delta = parseInt(width * (e.wheelDelta * (-0.0002)));
+	var delta = width * (e.wheelDelta * (-0.0002));
 	start = start - delta;
 	width = width + 2 * delta;
 	draw();
@@ -431,6 +431,8 @@ function begin(){
 	c = canvas.getContext("2d");
 	c.lineWidth = 1.5;
 	
+	document.addEventListener("touchstart", function() {}, true);
+
 	canvas.addEventListener('mousewheel',function(event){
 		mwheel(event);
 		event.returnValue = false;

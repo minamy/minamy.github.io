@@ -92,3 +92,18 @@ body {
     background-color: #b6cee2;
     cursor: pointer;
 }
+
+.gymcount{
+    font-size: 240px;
+    margin-top: -40px;
+    margin-bottom: -30px;
+}
+
+.headtext{
+    margin-bottom: 15px;
+    font-size: 30px;
+}
+
+.footertext{
+    font-size: 45px;
+}

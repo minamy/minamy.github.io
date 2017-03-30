@@ -10,7 +10,6 @@
 	<title>FitIn | Make Bath Uni Gym Great Again</title>
 	<link href="stylesheet.css" type="text/css" rel="stylesheet">
 	<script type="text/javascript" src="script.js"></script>
-	<script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
 </head>
 	<body>
 		<header class="title">
@@ -40,13 +39,13 @@
 				<a class="login" href="timetable.html">Edit Timetable</a>
 			</div>
 		</div>
-		<p style="text-align: center;">People in the gym</p>
-        <input name="peopleInGym" id="numPeople" type="text" maxlength="3" readonly="">
+        <p id="numPeople" class="gymcount">0</p>
+		<p class="headtext">people are making gains</p>
 		<script src="gymPeople.js"></script>
 		<p style="text-align:center;">
             <img id="busyness" style="width: 70%;" alt="Gym State" title="Gym State" align="middle" />
         </p>
-		<p style="text-align:center;" id="txtBusyness"></p>
+		<p class="footertext" id="txtBusyness"></p>
 
 	</body>
 </html>
