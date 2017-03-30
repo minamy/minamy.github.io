@@ -15,7 +15,7 @@
         $_SESSION['username'] = $email;
         $message = "success";
     } else {
-        $message = "Invalid Username or Password!";
+        $message = "failure";
     }
 
     echo json_encode($message);

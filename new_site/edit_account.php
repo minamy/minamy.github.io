@@ -9,6 +9,10 @@
 	<meta name="robots" content="index, follow" />
 	<title>FitIn | Edit Account</title>
 	<link href="stylesheet.css" type="text/css" rel="stylesheet">
+	<link href="style.css" type="text/css" rel="stylesheet">
+	<link rel="stylesheet" type="text/css" href="sweetalert-master/dist/sweetalert.css">
+    <script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+	<script src="sweetalert-master/dist/sweetalert.min.js"></script>
 	<script type="text/javascript" src="script.js"></script>
 	<script type="text/javascript">
 		var loggedIn = <?php
@@ -21,6 +25,7 @@
 			}
 		?>
 	</script>
+	<script type="text/javascript" src="editAccount.js"></script>
 </head>
 	<body>
 		<header class="title">
@@ -51,5 +56,21 @@
 			</div>
 		</div>
 		<h1 style="text-align: center; font-style: italic;">Edit Account</h1>
+		<form name="frmEditAcc" id="frmEditAcc" method="post">
+			<fieldset class="account-info">
+					<label for ="curPass">Confirm Current Password:
+					<input name="accPass" id="accPass" type="password" placeholder="Enter current password..." maxlength="25">
+					</label>
+					<label for ="newPass">New Password:
+					<input name="accNewPass" id="accNewPass" type="password" placeholder="Enter new password..." maxlength="25">
+					</label>
+					<label for ="confNewPass">Confirm New Password:
+					<input name="accConfNewPass" id="accConfNewPass" type="password" placeholder="Confirm new password..." maxlength="25">
+					</label>
+			</fieldset>
+			<fieldset>
+				<input class="btn" type="submit" id="accSubmit" name="accSubmit" value="Update">
+			</fieldset>
+		</form>
 	</body>
 </html>
