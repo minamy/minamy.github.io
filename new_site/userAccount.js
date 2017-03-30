@@ -41,7 +41,7 @@ $(function() {
                             swal("Success!", "Your account has been created!", "success");
                             $('#div1').remove();
                             setTimeout(function() {
-                                window.location = 'index.html'
+                                window.location = 'index.php'
                             }, 1000); // 1 sec
                         }
                     }

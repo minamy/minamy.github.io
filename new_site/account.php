@@ -1,17 +1,25 @@
 <?php 
     include 'db_interface.php';
+    session_start();
     $conn = connect();
-
+	
+    $message="";
     $email = $_POST['email'];
     $password = $_POST['pass'];
-    $query = "SELECT Username, Password FROM User WHERE Username='$email' and Password='$password'";
 
+    $query = "SELECT Username, Password FROM User WHERE Username='$email' and Password='$password'";
     $result = mysqli_query($conn, $query);
     $count = mysqli_num_rows($result);
 
     if ($count == 1) {
-        echo json_encode("success");
+        $_SESSION['username'] = $email;
+        $message = "success";
+    } else {
+        $message = "Invalid Username or Password!";
     }
+
+    echo json_encode($message);
+    
     mysqli_close($conn);
 
 ?>

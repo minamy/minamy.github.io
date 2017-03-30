@@ -27,7 +27,7 @@ $(function() {
                                     swal("Success!", "You have logged in!", "success");
                                     $('#div1').remove();
                                     setTimeout(function() {
-                                        window.location = 'index.html'
+                                        window.location = 'index.php'
                                     }, 1000); // 1 sec
                                 } else {
                                     $('#div1').remove();
