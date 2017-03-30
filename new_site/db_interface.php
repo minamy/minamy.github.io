@@ -2,6 +2,24 @@
 	$input = json_decode(file_get_contents("php://input"));
 	$request = $input->value;
 	$output = fopen('php://output', 'w');
+	if ($request == "add"){
+		$time = $input->time;
+		$people = $input->people;
+		$link = connect();
+		$r = true;
+		$query = "INSERT INTO `History` (`Time`, `People`)
+		VALUES (".'"'.$time.'"'.", ".$people.");";
+		$result = mysqli_query($link, $query);
+		$r = $r && $result;
+		if ($r){
+			fwrite($output, "Success
+			");
+		}else {
+			fwrite($output, "Failure
+			");
+		}
+		mysqli_close($link);
+	} else 
 	if ($request == "sethistory"){
 		$time = $input->time;
 		$people = $input->people;

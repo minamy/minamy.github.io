@@ -4,7 +4,8 @@ function update(){
 	req.onload = function() {
 		if (req.status === 200) {
 			var result = req.responseText;
-			document.getElementById("numPeople").value = result.replace(/\"/g,"");
+			result = parseInt(result.substr(1,result.length-2));
+			document.getElementById("numPeople").value = result;
 			var txtBusyness;
 			if (result > 70) {
 				document.getElementById("busyness").src = "Images/ExtremelyBusy.png";
@@ -34,4 +35,4 @@ function update(){
 	req.send();
 }
 update();
-setInterval(update, 5000);
+//setInterval(update, 5000);
