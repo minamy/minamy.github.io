@@ -64,7 +64,7 @@
                 </fieldset>
 				<fieldset>
 						<input class="btn" type="submit" id="submit" name="submit" value="Login">
-						<h4 style="text-align:center; margin: 15px"> Don't have an account? <a href="create_account.html"> Sign up</a></h4>
+						<h4 style="text-align:center; margin: 15px"> Don't have an account? <a href="create_account.php"> Sign up</a></h4>
                 </fieldset>
 		</form>
 	</body>
