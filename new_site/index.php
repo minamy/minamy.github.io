@@ -51,7 +51,7 @@
 			</div>
 		</div>
         <p id="numPeople" class="gymcount">0</p>
-		<p class="headtext">people are making gains</p>
+		<p class="desctext">people are making gains</p>
 		<script src="gymPeople.js"></script>
 		<p style="text-align:center;">
             <img id="busyness" style="width: 70%;" alt="Gym State" title="Gym State" align="middle" />

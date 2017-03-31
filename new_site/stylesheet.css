@@ -101,6 +101,12 @@ body {
 
 .headtext{
     margin-bottom: 15px;
+    margin-top: 15px;
+    font-size: 45px;
+}
+
+.desctext{
+    margin-bottom: 15px;
     font-size: 30px;
 }
 

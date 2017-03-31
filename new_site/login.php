@@ -3,12 +3,10 @@
 <head>
 	<title>FitIn | Login</title>
 	<link href="stylesheet.css" type="text/css" rel="stylesheet">
-	<link rel="stylesheet" type="text/css" href="sweetalert-master/dist/sweetalert.css">
 	<link rel="stylesheet" type="text/css" href="style.css">
 	<script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
 	<script type="text/javascript" src="script.js"></script>
 	<script type="text/javascript" src="loginCheck.js"></script>
-	<script src="sweetalert-master/dist/sweetalert.min.js"></script>
 	<script>
 		document.addEventListener("touchstart", function () { }, true);
 	</script>
@@ -52,11 +50,11 @@
 				<a class="login" href="timetable.php">Edit Timetable</a>
 			</div>
 		</div>
-		<h1 style="text-align: center; font-style: italic;">Login</h1>
+		<p class="headtext">Login</p>
         <form name="main_form" id="main_form">
-                <fieldset class="account-info">
-					<label for ="email">E-mail: 
-                    <input name="email" id="email" type="email" placeholder="Email address" maxlength="30">
+                <fieldset class="bigaccount-info">
+					<label for ="email">Username: 
+                    <input name="email" id="email" type="name" placeholder="Email address" maxlength="30">
 					</label>
 					<label for ="password">Password: 
                     <input name="password" id="password" type="password" placeholder="Password" maxlength="25">
@@ -64,7 +62,7 @@
                 </fieldset>
 				<fieldset>
 						<input class="btn" type="submit" id="submit" name="submit" value="Login">
-						<h4 style="text-align:center; margin: 15px"> Don't have an account? <a href="create_account.php"> Sign up</a></h4>
+						<p class="desctext"> Don't have an account? <a href="create_account.php"> Sign up</a></p>
                 </fieldset>
 		</form>
 	</body>

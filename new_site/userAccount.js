@@ -1,12 +1,12 @@
 $(function() {
     $('#frmAcc').on('submit', function(e) {
         var email = $("#accEmail").val();
-        var rEmail = $("#accrEmail").val();
+        var name = $("#accName").val();
         var pass = $("#accPassword").val();
         var rPass = $("#accrPassword").val();
         var $div = $("<div>", {"class": "alert", id: "div1"});
         var $span = $("<span>");
-        if (email == "" || pass == "" || rEmail == "" || rPass == "") {
+        if (email == "" || pass == "" || name == "" || rPass == "") {
             $('#div1').remove();
             $('#frmAcc').append(
                 $($div).append(
@@ -15,11 +15,11 @@ $(function() {
             );
             e.preventDefault();
         } else {
-            if ((email != rEmail) || (pass != rPass)) {
+            if (pass != rPass) {
                 $('#div1').remove();
                 $('#frmAcc').append(
                     $($div).append(
-                        $($span).append("<strong>Error: </strong>Emails and/or passwords do not match.")
+                        $($span).append("<strong>Error: </strong>Passwords do not match.")
                     )
                 );
                 e.preventDefault();
@@ -29,16 +29,15 @@ $(function() {
                     url: "saveUserAccount.php",
                     data:
                     {
+                        name: name,
                         email: email,
                         pass: pass
                     },
                     success: function(data) {
                         if (data.includes("success")) {
                             $('#div1').remove();
-                            swal("Oops...", "The email address is already taken!", "error");
                             e.preventDefault();
                         } else {
-                            swal("Success!", "Your account has been created!", "success");
                             $('#div1').remove();
                             setTimeout(function() {
                                 window.location = 'index.php'

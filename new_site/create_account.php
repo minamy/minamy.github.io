@@ -10,11 +10,9 @@
 	<title>FitIn | Create Account</title>
 	<link href="stylesheet.css" type="text/css" rel="stylesheet">
 	<link href="style.css" type="text/css" rel="stylesheet">
-	<link rel="stylesheet" type="text/css" href="sweetalert-master/dist/sweetalert.css">
     <script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
 	<script type="text/javascript" src="script.js"></script>
 	<script type="text/javascript" src="userAccount.js"></script>
-	<script src="sweetalert-master/dist/sweetalert.min.js"></script>
 	<script type="text/javascript">
 		var loggedIn = <?php
 			session_start();
@@ -55,14 +53,14 @@
 				<a class="login" href="timetable.php">Edit Timetable</a>
 			</div>
 		</div>
-		<h1 style="text-align: center; font-style: italic;">Create New Account</h1>
+		<h1 class="headtext">Create New Account</h1>
         <form name="frmAcc" id="frmAcc" method="post">
 			<fieldset class="account-info">
-					<label for ="email">E-mail:
-					<input name="accEmail" id="accEmail" type="email" placeholder="E-mail" maxlength="30">
+					<label for ="email">Username:
+					<input name="accName" id="accName" type="name" placeholder="Username" maxlength="30">
 					</label>
-					<label for ="remail">Repeat E-mail:
-					<input name="accrEmail" id="accrEmail" type="email" placeholder="Repeat E-mail" maxlength="30">
+					<label for ="remail">E-mail:
+					<input name="accrEmail" id="accEmail" type="email" placeholder="Repeat E-mail" maxlength="30">
 					</label>
 					<label for ="password">Password:
 					<input name="accPassword" id="accPassword" type="password" placeholder="Password" maxlength="25">

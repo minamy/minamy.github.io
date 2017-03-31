@@ -3,6 +3,7 @@
         $conn = connect();
 
         // get user data
+        $name = $_POST['name'];
         $email = $_POST['email'];
         $password = $_POST['pass'];
         $timetable = array_fill(0, 672, false);
@@ -11,7 +12,7 @@
         $query = "SELECT Username FROM User WHERE Username='$email'";
         $result = mysqli_query($conn, $query);
         $sql = "INSERT INTO User (Username, Email, Password, Timetable)
-        VALUES ('$email', '$email', '$password', '$serTimetable')";
+        VALUES ('$name', '$email', '$password', '$serTimetable')";
         if (mysqli_num_rows($result) > 0){
 	        echo json_encode("success");
         } else {

@@ -32,7 +32,6 @@ $(function() {
                         },
 						success: function(data) {
 							if (data.includes("success")) {
-                                swal("Success!", "Your password has been updated!", "success");
                                 $('#div1').remove();
                                 setTimeout(function() {
                                 window.location = 'index.php'

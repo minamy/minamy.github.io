@@ -10,9 +10,7 @@
 	<title>FitIn | Edit Account</title>
 	<link href="stylesheet.css" type="text/css" rel="stylesheet">
 	<link href="style.css" type="text/css" rel="stylesheet">
-	<link rel="stylesheet" type="text/css" href="sweetalert-master/dist/sweetalert.css">
     <script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
-	<script src="sweetalert-master/dist/sweetalert.min.js"></script>
 	<script type="text/javascript" src="script.js"></script>
 	<script type="text/javascript">
 		var loggedIn = <?php
@@ -55,7 +53,7 @@
 				<a class="login" href="timetable.php">Edit Timetable</a>
 			</div>
 		</div>
-		<h1 style="text-align: center; font-style: italic;">Edit Account</h1>
+		<h1 class="headtext">Edit Account</h1>
 		<form name="frmEditAcc" id="frmEditAcc" method="post">
 			<fieldset class="account-info">
 					<label for ="curPass">Confirm Current Password:
