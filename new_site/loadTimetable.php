@@ -3,12 +3,11 @@
         $conn = connect();
 
         if (isset($_SESSION['username'])) {
-            $query = "SELECT Timetable FROM User WHERE Username='{$_SESSION['username']}' or Email='{$_SESSION['username']}'";
+            $query = "SELECT Timetable FROM User WHERE Username='{$_SESSION['username']}'";
             $result = mysqli_query($conn, $query);
             if (mysqli_num_rows($result) > 0) {
                 $obj = mysqli_fetch_object($result);
-                $obj = $obj->Timetable;
-                $timetable = unserialize($obj);
+                $timetable = unserialize($obj->Timetable);
                 echo json_encode($timetable);
             } else {
                 echo "fail";
@@ -27,5 +26,4 @@
             }
             return  $connect;
         }
-
 ?>
