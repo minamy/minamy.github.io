@@ -54,7 +54,7 @@
         <form name="main_form" id="main_form">
                 <fieldset class="bigaccount-info">
 					<label for ="email">Username: 
-                    <input name="email" id="email" type="name" placeholder="Email address" maxlength="30">
+                    <input name="email" id="email" type="name" placeholder="Username" maxlength="30">
 					</label>
 					<label for ="password">Password: 
                     <input name="password" id="password" type="password" placeholder="Password" maxlength="25">
