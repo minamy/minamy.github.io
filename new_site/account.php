@@ -17,13 +17,21 @@
     $name = $_POST['name'];
     $password = $_POST['pass'];
 
-    $query = "SELECT `Username`, `Password` FROM `User` WHERE `Username`='$name' and `Password`='$password'";
-    $result = mysqli_query($conn, $query);
-    $count = mysqli_num_rows($result);
+    $query1 = "SELECT `Username`, `Password` FROM `User` WHERE `Username`='$name' and `Password`='$password'";
+    $result1 = mysqli_query($conn, $query1);
+    $count1 = mysqli_num_rows($result1);
+    $query2 = "SELECT `Username`, `Email`, `Password` FROM `User` WHERE `Email`='$name' and `Password`='$password'";
+    $result2 = mysqli_query($conn, $query2);
+    $count2 = mysqli_fetch_all($result2);
+    $result= $result1;
 
-    if ($count == 1) {
+    if ($count1 == 1) {
         $_SESSION['username'] = $name;
         $message = "success";
+    } elseif (sizeof($count2) == 1) {
+        $_SESSION['username'] = $count2[0][0];
+        $message = "success";
+        $result = $result2;
     } else {
         $message = "failure".$name.$password;
     }
