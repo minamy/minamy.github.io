@@ -93,8 +93,52 @@ function booleanTable() {
     }
 }
 
+function toSingleArray(doubleArray) {
+    var singleArray = [],
+                       i;
+    var transArray = transposeArray(doubleArray);
+    for (i = 0; i < transArray.length; i++) {
+        singleArray = singleArray.concat(transArray[i]);
+    }
+    return singleArray;
+}
+
+function transposeArray(array) {
+    return Object.keys(array[0]).map(
+        function (c) { return array.map(function (r) { return r[c]; }); }
+        );
+}
+
 function sendBools() {
-    var data = JSON.stringify({value: "setTimetable", table: array});
+    var singleArray = JSON.stringify(toSingleArray(array));
+    $.ajax({
+        type: 'POST',
+        url: "updateTimetable.php",
+        data:
+        {
+            timetable: singleArray
+        },
+        cache: false,
+        success: function(data) {
+            if (data.includes("success")) {
+                console.log("timetable updated");
+            } else {
+                console.log("fail");
+            }
+        }
+    });
+    //var data = JSON.stringify({value: "setTimetable", table: singleArray});
+}
+
+function loadTimetable() {
+    $.ajax({
+        type: 'POST',
+        url: 'loadTimetable.php',
+        success: function(data) {
+            var timetable = jQuery.parseJSON(data);
+            console.log(timetable);
+        }
+    });
 }
 
 function touched(canvas, c, event) {
@@ -117,6 +161,7 @@ function touched(canvas, c, event) {
         array[arrayIndexX+3][arrayIndexY] = !b;
     }
     drawTable();
+    sendBools();
 }
 
 window.onresize = function(e){
@@ -148,6 +193,7 @@ function begin() {
     setColumnWidth();
     setRowWidth();
     booleanTable();
+    loadTimetable();
     window.onresize();
 }
 document.addEventListener('DOMContentLoaded',domloaded,false);
