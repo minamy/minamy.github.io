@@ -1,27 +1,35 @@
 var canvas;
 var c;
 var on = 0;
-var offsetX = 10;
-var offsetY = 10;
+var offsetX = 1;
+var offsetY = 1;
 var columnWidth = 0;
 var rowWidth = 0;
 var array = [[]];
 var rows = 4*18;
+var cWidth = 0;
+var cHeight = 0;
+var drag = false;
+var scroll = 0;
+var dx = -1;
+var dy = -1;
+var mx = -1;
+var my = -1;
 
 function setColumnWidth() {
-    columnWidth = (canvas.width-2*offsetX) / (rows+4);
+    columnWidth = (cWidth-2*offsetX) / (rows+4);
 }
 
 function setRowWidth() {
-    rowWidth = (canvas.height-2*offsetY) / 8;
+    rowWidth = (cHeight-2*offsetY) / 8;
 }
 
 function drawVerticalLine() {
     var i;
     c.beginPath();
     for (i = 0; i <= rows+4; i += 4) {
-        c.moveTo(i*columnWidth+offsetX, offsetY);
-        c.lineTo(i*columnWidth+offsetX, canvas.height - offsetY);
+        c.moveTo(i*columnWidth+offsetX + scroll, offsetY);
+        c.lineTo(i*columnWidth+offsetX + scroll, cHeight - offsetY);
     }
     c.stroke();
 }
@@ -29,8 +37,8 @@ function drawVerticalLine() {
 function drawHorizontalLine() {
     var j;
     for (j = 0; j <= 9; j += 1) {
-        c.moveTo(offsetX, j*rowWidth+offsetY);
-        c.lineTo(canvas.width - offsetX, j*rowWidth+offsetY);
+        c.moveTo(offsetX + scroll, j*rowWidth+offsetY);
+        c.lineTo(columnWidth * 76 - offsetX + scroll, j*rowWidth+offsetY);
         c.stroke();
     }
 }
@@ -42,7 +50,7 @@ function drawNumber() {
     c.font = "19px Arial";
     for (i = offsetX + columnWidth * 5.2; i < columnWidth * (rows+4); i += columnWidth*4) {
         n = number.toString();
-        c.fillText(n, i, offsetY + rowWidth * 0.7);
+        c.fillText(n, i + scroll, offsetY + rowWidth * 0.7);
         number += 1;
     }
 }
@@ -53,7 +61,7 @@ function drawDay() {
         j;
     c.font = "15px Arial";
     for (j = offsetY + rowWidth * 1.7; j <= rowWidth * 8 + offsetY; j += rowWidth) {
-        c.fillText(days[counter], offsetX + columnWidth * 0.1, j-15);
+        c.fillText(days[counter], offsetX + columnWidth * 0.1 + scroll, j-15);
         counter += 1;
     }
 }
@@ -62,8 +70,8 @@ function fillTiles(){
     c.fillStyle="#f00";
     for (var i = 0; i < rows; i++){
         for (var j = 0; j < 7; j++){
-            if (array[i][j]){
-                c.fillRect((i+4)*columnWidth+offsetX-1, (j+1)*rowWidth+offsetY-1, columnWidth+2, rowWidth+2)
+            if (array[j][i]){
+                c.fillRect((i+4)*columnWidth+offsetX-1 + scroll, (j+1)*rowWidth+offsetY-1, columnWidth+2, rowWidth+2)
             }
         }
     }
@@ -71,102 +79,172 @@ function fillTiles(){
 }
 
 function drawTable() {
-    //c.save();
-    //c.rotate(Math.PI/2);
-    c.clearRect(0, 0, canvas.width, canvas.height)
+    c.save();
+    c.rotate(Math.PI/2);
+    c.translate(0, -cHeight);
+    c.clearRect(0, 0, cWidth, cHeight)
     fillTiles();
     drawVerticalLine();
     drawHorizontalLine();
     drawNumber();
     drawDay();
-    //c.restore();
+    c.restore();
 }
 
 function booleanTable() {
     var i = 0,
         j = 0;
-    for (i = 0; i < rows; i += 1) {
-        array[i] = [];
-        for (j = 0; j < 7; j += 1) {
-            array[i][j] = false;
+    for (j = 0; j < 7; j += 1) {
+        array[j] = [];
+        for (i = 0; i < rows; i += 1) {
+            array[j][i] = false;
         }
     }
 }
 
-function toSingleArray(doubleArray) {
-    var singleArray = [],
-                       i;
-    var transArray = transposeArray(doubleArray);
-    for (i = 0; i < transArray.length; i++) {
-        singleArray = singleArray.concat(transArray[i]);
+function singleToDouble(array){
+    var arr = [];
+    var j = 0;
+    for (var k = 0; k < 7; k++){
+        arr[k] = [];
+        j += 24;
+        for (var i = 0; i < 72; i++){
+            arr[k][i] = array[j];
+            j++;
+        }
     }
-    return singleArray;
+    return arr;
 }
 
-function transposeArray(array) {
-    return Object.keys(array[0]).map(
-        function (c) { return array.map(function (r) { return r[c]; }); }
-        );
+function doubleToSingle(array){
+    var arr = [];
+    var j = 0;
+    for (var k = 0; k < array.length; k++){
+        for (var i = 0; i < 24; i++){
+            arr[j] = true;
+            j++;
+        }
+        for (var i = 0; i < array[k].length; i++){
+            arr[j] = array[k][i];
+            j++;
+        }
+    }
+    return arr;
 }
 
 function sendBools() {
-    var singleArray = JSON.stringify(toSingleArray(array));
-    $.ajax({
-        type: 'POST',
-        url: "updateTimetable.php",
-        data:
-        {
-            timetable: singleArray
-        },
-        cache: false,
-        success: function(data) {
-            if (data.includes("success")) {
-                console.log("timetable updated");
-            } else {
-                console.log("fail");
-            }
-        }
-    });
-    //var data = JSON.stringify({value: "setTimetable", table: singleArray});
+    var data = JSON.stringify({ timetable: doubleToSingle(array) });
+	var request = new XMLHttpRequest();
+	request.open('POST', 'updateTimetable.php');
+	//request.responseType = "json";
+	request.setRequestHeader('Content-Type', 'application/json');
+	request.onreadystatechange = function() {
+		if (request.status >= 200 && request.status < 400) {
+			// Success!
+			if (request.readyState == 4) {
+			}
+		} else {
+			// We reached our target server, but it returned an error
+			console.log("FUCK");
+		}
+	};
+	request.send(data);
 }
 
 function loadTimetable() {
-    $.ajax({
-        type: 'POST',
-        url: 'loadTimetable.php',
-        success: function(data) {
-            var timetable = jQuery.parseJSON(data);
-            console.log(timetable);
-        }
-    });
+    var data = JSON.stringify({  });
+	var request = new XMLHttpRequest();
+	request.open('POST', 'loadTimetable.php');
+	//request.responseType = "json";
+	request.setRequestHeader('Content-Type', 'application/json');
+	request.onreadystatechange = function() {
+		if (request.status >= 200 && request.status < 400) {
+			// Success!
+			if (request.readyState == 4) {
+                var resp = JSON.parse(request.response);
+                array = singleToDouble(resp);
+                drawTable();
+                setInterval(sendBools, 1000);
+			}
+		} else {
+			// We reached our target server, but it returned an error
+			console.log("FUCK");
+		}
+	};
+	request.send(data);
 }
 
 function touched(canvas, c, event) {
+    drag = true;
+    var rect = event.currentTarget.getBoundingClientRect();
+    dx = event.clientY - rect.top;
+    dy = cHeight - (event.clientX - rect.left);
+    mx = event.clientY - rect.top;
+    my = cHeight - (event.clientX - rect.left);
+}
+
+function mup(event){
     var rect = event.currentTarget.getBoundingClientRect(),
-        touchX = event.clientX - rect.left,
-        touchY = event.clientY - rect.top,
+        touchY = cHeight - (event.clientX - rect.left),
+        touchX = event.clientY - rect.top,
         arrayIndexX = 0,
         arrayIndexY = 0,
         i = 0,
         xCood = 0,
         yCood = 0;
-        
-    arrayIndexX = parseInt((touchX - offsetX) / (columnWidth*4))*4-4;
-    arrayIndexY = parseInt((touchY - offsetY) / rowWidth)-1;
-    if (arrayIndexX >= 0 && arrayIndexY >= 0 && arrayIndexX < rows && arrayIndexY < 7) {
-        var b = array[arrayIndexX][arrayIndexY];
-        array[arrayIndexX+0][arrayIndexY] = !b;
-        array[arrayIndexX+1][arrayIndexY] = !b;
-        array[arrayIndexX+2][arrayIndexY] = !b;
-        array[arrayIndexX+3][arrayIndexY] = !b;
+    var dist = 0;
+    if (drag) {
+        dist = Math.sqrt((touchX-dx)*(touchX-dx)+(touchY-dy)*(touchY-dy));
     }
+    if (dist < 50){
+        arrayIndexX = parseInt((touchX - offsetX - scroll) / (columnWidth*4))*4-4;
+        arrayIndexY = parseInt((touchY - offsetY) / rowWidth)-1;
+        if (arrayIndexX >= 0 && arrayIndexY >= 0 && arrayIndexX < rows && arrayIndexY < 7) {
+            var b = array[arrayIndexY][arrayIndexX];
+            array[arrayIndexY][arrayIndexX+0] = !b;
+            array[arrayIndexY][arrayIndexX+1] = !b;
+            array[arrayIndexY][arrayIndexX+2] = !b;
+            array[arrayIndexY][arrayIndexX+3] = !b;
+        }
+    }
+    drag = false;
+    dx = -1;
+    dy = -1;
+    mx = -1;
+    my = -1;
     drawTable();
-    sendBools();
+}
+
+function mmove(event){
+    if (drag){
+        var rect = event.currentTarget.getBoundingClientRect();
+        x = event.clientY - rect.top;
+        y = cHeight - (event.clientX - rect.left);
+        scroll += x - mx;
+        if (scroll > 0) scroll = 0;
+        if (scroll < -columnWidth * 76 + cWidth - 2 * offsetX) scroll = -columnWidth * 76 + cWidth - 2 * offsetX;
+        mx = x;
+        my = y;
+        drawTable();
+    }
+}
+
+function mwheel(e){
+    var delta = columnWidth * (e.wheelDelta * (0.0002));
+    columnWidth += 2 * delta
+    if (columnWidth < 10) columnWidth = 10;
+    if (columnWidth > 100) columnWidth = 50;
+    scroll -= 76*delta;
+    if (scroll > 0) scroll = 0;
+    if (scroll < -columnWidth * 76 + cWidth - 2 * offsetX) scroll = -columnWidth * 76 + cWidth - 2 * offsetX;
+    drawTable();
 }
 
 window.onresize = function(e){
 	canvas.width = window.innerWidth;
 	canvas.height = window.innerHeight - 100;
+	cHeight = window.innerWidth;
+	cWidth = window.innerHeight - 100;
     setColumnWidth();
     setRowWidth();
     drawTable();
@@ -181,20 +259,51 @@ function begin() {
     
     canvaswidth = canvas.width;
     canvasheight = canvas.height;
+    cWidth = canvas.width;
+    cHeight = canvas.height;
     
+	canvas.addEventListener('mousewheel',function(event){
+		mwheel(event);
+		event.returnValue = false;
+		return false; 
+	}, false);
+	
     canvas.addEventListener("mousedown", function (event) {
         touched(canvas, c, event);
+		return false; 
     }, false);
     
     canvas.addEventListener("touchstart", function (event) {
         touched(canvas, c, event);
+		return false; 
     }, false);
+    
+	canvas.addEventListener('mousemove',function(event){
+		mmove(event);
+		return false; 
+	}, false);
+	
+	canvas.addEventListener('mouseup',function(event){
+		mup(event);
+		return false; 
+	}, false);
+	
+	canvas.addEventListener('touchmove',function(event){
+		mmove(event);
+		return false; 
+	}, false);
+	
+	canvas.addEventListener('touchend',function(event){
+		mup(event);
+		return false; 
+	}, false);
+	
     
     setColumnWidth();
     setRowWidth();
     booleanTable();
-    loadTimetable();
     window.onresize();
+    loadTimetable();
 }
 document.addEventListener('DOMContentLoaded',domloaded,false);
 function domloaded(){

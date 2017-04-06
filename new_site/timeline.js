@@ -301,7 +301,7 @@ function generateSeries(length = 1000) {
 }
 
 function ttIndex(i){
-	return parseInt((start+(i*width)/res-24802560)/5)%672;
+	return parseInt((start+(i*width)/res-24802560)/15)%672;
 }
 
 function getX(x){
@@ -549,8 +549,6 @@ function begin(){
 	c = canvas.getContext("2d");
 	c.lineWidth = 1.5;
 	
-	document.addEventListener("touchstart", function() {}, true);
-
 	canvas.addEventListener('mousewheel',function(event){
 		mwheel(event);
 		event.returnValue = false;
@@ -568,6 +566,21 @@ function begin(){
 	}, false);
 	
 	canvas.addEventListener('mousedown',function(event){
+		mdown(event);
+		return false; 
+	}, false);
+	
+	canvas.addEventListener('touchmove',function(event){
+		mmove(event);
+		return false; 
+	}, false);
+	
+	canvas.addEventListener('touchend',function(event){
+		mup(event);
+		return false; 
+	}, false);
+	
+	canvas.addEventListener('touchstart',function(event){
 		mdown(event);
 		return false; 
 	}, false);
