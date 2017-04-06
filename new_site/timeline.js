@@ -32,6 +32,7 @@ var max = 80;
 var start = 0;
 var width = 200;
 var s = generateSeries(20);
+var p = null;
 var but = -1;
 var advice = false;
 
@@ -68,6 +69,46 @@ function updateHistory(){
 	//NO JQUERY
 }
 
+function setPrediction(){
+	//DO POST
+	var t = [];
+	var d = [];
+	for (var i = 0; i < s.length && i < s.length; i++){
+		t[i] = s.time[i];
+		d[i] = s.data[i];
+	}
+	var data = JSON.stringify({ value: "predict", time: t, people: d });
+	var request = new XMLHttpRequest();
+	request.open('POST', 'prediction_system.php');
+	//request.responseType = "json";
+	request.setRequestHeader('Content-Type', 'application/json');
+	request.onreadystatechange = function() {
+		if (request.status >= 200 && request.status < 400) {
+			// Success!
+			if (request.readyState == 4) {
+				var resp = JSON.parse(request.response);
+				st = [];
+				sd = [];
+				for (var i = 0; i < resp[0].length; i++){
+					st[i] = resp[0][i];
+					sd[i] = parseInt(resp[1][i]);
+				}
+				p = {};
+				p.time = st;
+				p.data = sd;
+				p.length = resp[0].length;
+				p.width = 200;
+				draw();
+			}
+		} else {
+			// We reached our target server, but it returned an error
+			s = generateSeries(1000);
+		}
+	};
+	request.send(data);
+	//NO JQUERY
+}
+
 function getHistory(){
 	//DO POST
 	var data = JSON.stringify({ value: "gethistory" });
@@ -91,6 +132,7 @@ function getHistory(){
 				s.length = resp.length;
 				s.width = 200;
 				start = s.time[s.length - 1] - 110;
+				setPrediction();
 				draw();
 			}
 		} else {
@@ -310,33 +352,72 @@ function draw(){
 	c.fillRect(0, 0, canvas.width, canvas.height);
 	
 	c.lineWidth = 3;
-	c.strokeStyle = "#000";
+	c.strokeStyle = "#f00";
 	c.beginPath();
 	var res = 100;
 	var j = 0;
 	var lastX = -1;
-	while (j+1 < s.length && s.time[j+1] < start) j++;
-	for (var i = 0; i <= res; i++) {
-		var x = 0;
-		var count = 0;
-		while (j+1 < s.length && s.time[j] < start + (width * i) / res){
-			x += s.data[j];
-			count++;
-			j++;
+	if (p != null){
+		while (j+1 < p.length && p.time[j+1] < start) j++;
+		for (var i = 0; i <= res; i++) {
+			var x = 0;
+			var count = 0;
+			while (j+1 < p.length && p.time[j] < start + (width * i) / res){
+				x += p.data[j];
+				count++;
+				j++;
+			}
+			if (j + 1 < p.length){
+				if ( count == 0){
+					if (lastX >= 0){
+						c.moveTo(lastX, (i - 1) * canvas.height / res);
+						c.lineTo(lastX, i * canvas.height / res);
+					}
+				} else {
+					x = getX(x / count);
+					if (lastX >= 0){
+						c.moveTo(lastX, (i - 1) * canvas.height / res);
+						c.lineTo(x, i * canvas.height / res);
+					}
+					lastX = x;
+				}
+			}
 		}
-		if (j + 1 < s.length){
-			if ( count == 0){
-				if (lastX >= 0){
-					c.moveTo(lastX, (i - 1) * canvas.height / res);
-					c.lineTo(lastX, i * canvas.height / res);
+	}
+	
+	c.stroke();
+
+	
+	c.lineWidth = 3;
+	c.strokeStyle = "#000";
+	c.beginPath();
+	res = 100;
+	j = 0;
+	lastX = -1;
+	if (s != null){
+		while (j+1 < s.length && s.time[j+1] < start) j++;
+		for (var i = 0; i <= res; i++) {
+			var x = 0;
+			var count = 0;
+			while (j+1 < s.length && s.time[j] < start + (width * i) / res){
+				x += s.data[j];
+				count++;
+				j++;
+			}
+			if (j + 1 < s.length){
+				if ( count == 0){
+					if (lastX >= 0){
+						c.moveTo(lastX, (i - 1) * canvas.height / res);
+						c.lineTo(lastX, i * canvas.height / res);
+					}
+				} else {
+					x = getX(x / count);
+					if (lastX >= 0){
+						c.moveTo(lastX, (i - 1) * canvas.height / res);
+						c.lineTo(x, i * canvas.height / res);
+					}
+					lastX = x;
 				}
-			} else {
-				x = getX(x / count);
-				if (lastX >= 0){
-					c.moveTo(lastX, (i - 1) * canvas.height / res);
-					c.lineTo(x, i * canvas.height / res);
-				}
-				lastX = x;
 			}
 		}
 	}
