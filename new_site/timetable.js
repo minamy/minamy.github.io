@@ -29,8 +29,10 @@ function drawVerticalLine() {
     c.beginPath();
     var zoom = columnWidth < 30 ? columnWidth < 15 ? 4 : 2 : 1;
     for (i = 0; i <= rows+zoom; i += zoom) {
-        c.moveTo(i*columnWidth+offsetX + scroll, offsetY);
-        c.lineTo(i*columnWidth+offsetX + scroll, cHeight - offsetY);
+        if (i < 1 || i > 3){
+            c.moveTo(i*columnWidth+offsetX + scroll, offsetY);
+            c.lineTo(i*columnWidth+offsetX + scroll, cHeight - offsetY);
+        }
     }
     c.stroke();
 }
@@ -49,7 +51,7 @@ function drawNumber() {
         n,
         i;
     c.font = "19px Arial";
-    for (i = offsetX + 5; i < columnWidth * (rows+4); i += columnWidth*4) {
+    for (i = offsetX + 5 + columnWidth*4; i < columnWidth * (rows+4); i += columnWidth*4) {
         n = number.toString();
         c.fillText(n, i + scroll, offsetY + rowWidth * 0.7);
         number += 1;
