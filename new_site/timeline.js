@@ -20,6 +20,7 @@ bounds.y = 0;
 bounds.w = 700;
 bounds.h = 500;
 var buttonWidth = 100;
+var res = 100;
 
 var mx = -1;
 var my = -1;
@@ -29,13 +30,40 @@ var maxmag = 1;
 var drag = false;
 var max = 80;
 
+var busy = 40
 var start = 0;
 var width = 200;
 var s = generateSeries(20);
 var p = null;
 var but = -1;
-var advice = false;
+var advice = "true"==(document.URL.match(/advice=([a-z]+)/)[1])
+var timetable = [];
 
+function getTimetable(){
+	//DO POST
+	var data = JSON.stringify({ value: "gettimetable", name: name });
+	var request = new XMLHttpRequest();
+	request.open('POST', 'db_interface.php');
+	//request.responseType = "json";
+	request.setRequestHeader('Content-Type', 'application/json');
+	request.onreadystatechange = function() {
+		if (request.status >= 200 && request.status < 400) {
+			// Success!
+			if (request.readyState == 4) {
+				var resp = JSON.parse(request.response);
+				if (resp == "Failure"){
+					timetable = []
+				} else {
+					timetable = resp;
+					for (var i = 0; i < timetable.length; i++){
+						timetable[i] = !timetable[i];
+					}
+				}
+			}
+		}
+	};
+	request.send(data);
+}
 
 function updateHistory(){
 	//DO POST
@@ -272,6 +300,10 @@ function generateSeries(length = 1000) {
 	return s;
 }
 
+function ttIndex(i){
+	return parseInt((start+(i*width)/res-24802560)/5)%672;
+}
+
 function getX(x){
 	return bounds.x + x/max*0.8*(bounds.w);
 	//p.y = parseInt((s.time[i]-start)*bounds.h/(width - 1));
@@ -353,8 +385,8 @@ function draw(){
 	
 	c.lineWidth = 3;
 	c.strokeStyle = "#f00";
+	c.fillStyle = "rgba(0, 255, 0, 0.3)"
 	c.beginPath();
-	var res = 100;
 	var j = 0;
 	var lastX = -1;
 	if (p != null){
@@ -370,12 +402,18 @@ function draw(){
 			if (j + 1 < p.length){
 				if ( count == 0){
 					if (lastX >= 0){
+						if (advice && lastX < getX(busy) && timetable[ttIndex(i-1)] && timetable[ttIndex(i)]){
+							c.fillRect(bounds.x, (i - 1) * canvas.height / res, bounds.w, canvas.height / res)
+						}
 						c.moveTo(lastX, (i - 1) * canvas.height / res);
 						c.lineTo(lastX, i * canvas.height / res);
 					}
 				} else {
 					x = getX(x / count);
 					if (lastX >= 0){
+						if (advice && (lastX+x)/2.0 < getX(busy) && timetable[ttIndex(i-1)] && timetable[ttIndex(i)]){
+							c.fillRect(bounds.x, (i - 1) * canvas.height / res, bounds.w, canvas.height / res)
+						}
 						c.moveTo(lastX, (i - 1) * canvas.height / res);
 						c.lineTo(x, i * canvas.height / res);
 					}
@@ -391,7 +429,6 @@ function draw(){
 	c.lineWidth = 3;
 	c.strokeStyle = "#000";
 	c.beginPath();
-	res = 100;
 	j = 0;
 	lastX = -1;
 	if (s != null){
@@ -544,6 +581,7 @@ function begin(){
 	draw();
 	setInterval(clock, 18);
 	setInterval(updateHistory, 60000);
+	getTimetable();
 }
 
 getHistory();

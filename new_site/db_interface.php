@@ -2,7 +2,23 @@
 	$input = json_decode(file_get_contents("php://input"));
 	$request = $input->value;
 	$output = fopen('php://output', 'w');
-	if ($request == "add"){
+	if ($request == "gettimetable"){
+		if ($input->name != ""){
+			$link = connect();
+			$r = true;
+			$query = "SELECT `Timetable` FROM `User` WHERE `Username` = '".$input->name."';";
+			$result = mysqli_query($link, $query);
+			$r = $r && $result;
+			if ($r){
+				fwrite($output, json_encode(unserialize(mysqli_fetch_all($result)[0][0])));
+			}else {
+				fwrite($output, json_encode("Failure"));
+			}
+			mysqli_close($link);
+		} else {
+				fwrite($output, json_encode("Failure"));
+		}
+	} else if ($request == "add"){
 		$time = $input->time;
 		$people = $input->people;
 		$link = connect();
@@ -19,8 +35,7 @@
 			");
 		}
 		mysqli_close($link);
-	} else 
-	if ($request == "sethistory"){
+	} else if ($request == "sethistory"){
 		$time = $input->time;
 		$people = $input->people;
 		$link = connect();

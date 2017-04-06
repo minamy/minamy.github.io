@@ -31,9 +31,9 @@
 		<div class="menu">
 			<div class="mainmenu" id="mainmenu">
 				<a href="index.php">Current Space</a>
-				<a href="timeline.php">Predictions</a>
-				<a href="timeline.php">Advised Times</a>
-				<a href="timeline.php">History</a>
+				<a href="timeline.php?advice=false">Predictions</a>
+				<a href="timeline.php?advice=true">Advised Times</a>
+				<a href="timeline.php?advice=false">History</a>
 				<a class="logout" href="login.php">Log In</a>
 				<a class="login" href="logout.php">Log Out</a>
 				<a href="create_account.php">New Account</a>
