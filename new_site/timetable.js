@@ -27,7 +27,8 @@ function setRowWidth() {
 function drawVerticalLine() {
     var i;
     c.beginPath();
-    for (i = 0; i <= rows+4; i += 4) {
+    var zoom = columnWidth < 30 ? columnWidth < 15 ? 4 : 2 : 1;
+    for (i = 0; i <= rows+zoom; i += zoom) {
         c.moveTo(i*columnWidth+offsetX + scroll, offsetY);
         c.lineTo(i*columnWidth+offsetX + scroll, cHeight - offsetY);
     }
@@ -48,7 +49,7 @@ function drawNumber() {
         n,
         i;
     c.font = "19px Arial";
-    for (i = offsetX + columnWidth * 5.2; i < columnWidth * (rows+4); i += columnWidth*4) {
+    for (i = offsetX + 5; i < columnWidth * (rows+4); i += columnWidth*4) {
         n = number.toString();
         c.fillText(n, i + scroll, offsetY + rowWidth * 0.7);
         number += 1;
@@ -197,14 +198,14 @@ function mup(event){
         dist = Math.sqrt((touchX-dx)*(touchX-dx)+(touchY-dy)*(touchY-dy));
     }
     if (dist < 50){
-        arrayIndexX = parseInt((touchX - offsetX - scroll) / (columnWidth*4))*4-4;
+        var zoom = columnWidth < 30 ? columnWidth < 15 ? 4 : 2 : 1;
+        arrayIndexX = parseInt((touchX - offsetX - scroll) / (columnWidth*zoom))*zoom-4;
         arrayIndexY = parseInt((touchY - offsetY) / rowWidth)-1;
         if (arrayIndexX >= 0 && arrayIndexY >= 0 && arrayIndexX < rows && arrayIndexY < 7) {
             var b = array[arrayIndexY][arrayIndexX];
-            array[arrayIndexY][arrayIndexX+0] = !b;
-            array[arrayIndexY][arrayIndexX+1] = !b;
-            array[arrayIndexY][arrayIndexX+2] = !b;
-            array[arrayIndexY][arrayIndexX+3] = !b;
+            for (var i = 0; i < zoom; i++){
+                array[arrayIndexY][arrayIndexX+i] = !b;
+            }
         }
     }
     drag = false;
