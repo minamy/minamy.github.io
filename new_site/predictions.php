@@ -1,12 +1,11 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html>
 <head>
-	<title>FitIn | Login</title>
+	<title>FitIn | Predictions</title>
 	<link href="stylesheet.css" type="text/css" rel="stylesheet">
 	<link rel="stylesheet" type="text/css" href="style.css">
-	<script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
 	<script type="text/javascript" src="script.js"></script>
-	<script type="text/javascript" src="loginCheck.js"></script>
+	<script type="text/javascript" src="predictions.js"></script>
 	<script>
 		document.addEventListener("touchstart", function () { }, true);
 	</script>
@@ -50,20 +49,22 @@
 				<a class="login" href="timetable.php">Edit Timetable</a>
 			</div>
 		</div>
-		<p class="headtext">Login</p>
+		<p class="headtext">Predictions</p>
         <form name="main_form" id="main_form">
-                <fieldset class="bigaccount-info">
-					<label for ="email">Username: 
-                    <input name="email" id="email" type="name" placeholder="Username" maxlength="30">
+                <fieldset class="bigaccount-info", id="collapse">
+					<label for ="day">Day: 
+                    <input name="day" id="day" type="name" placeholder="e.g. Thursday" maxlength="30">
 					</label>
-					<label for ="password">Password: 
-                    <input name="password" id="password" type="password" placeholder="Password" maxlength="25">
+					<label for ="hour">Hour: 
+                    <input name="hour" id="hour" type="name" placeholder="e.g. 4PM" maxlength="30">
 					</label>
                 </fieldset>
 				<fieldset>
-						<input class="btn" type="submit" id="submit" name="submit" value="Login">
-						<p class="desctext"> Don't have an account? <a href="create_account.php"> Sign up</a></p>
+						<input class="btn" type="submit" id="submit" name="submit" value="Predict">
                 </fieldset>
+				<fieldset class="answer">
+					<label id="answer"></label>
+				</fieldset>
 		</form>
 	</body>
 </html>

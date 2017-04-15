@@ -15,6 +15,8 @@ var dx = -1;
 var dy = -1;
 var mx = -1;
 var my = -1;
+var touches = 0;
+var tdist = -1
 
 function setColumnWidth() {
     columnWidth = (cWidth-2*offsetX) / (rows+4);
@@ -82,16 +84,12 @@ function fillTiles(){
 }
 
 function drawTable() {
-    c.save();
-    c.rotate(Math.PI/2);
-    c.translate(0, -cHeight);
     c.clearRect(0, 0, cWidth, cHeight)
     fillTiles();
     drawVerticalLine();
     drawHorizontalLine();
     drawNumber();
     drawDay();
-    c.restore();
 }
 
 function booleanTable() {
@@ -177,19 +175,19 @@ function loadTimetable() {
 	request.send(data);
 }
 
-function touched(canvas, c, event) {
+function mdown(x, y) {
     drag = true;
-    var rect = event.currentTarget.getBoundingClientRect();
-    dx = event.clientY - rect.top;
-    dy = cHeight - (event.clientX - rect.left);
-    mx = event.clientY - rect.top;
-    my = cHeight - (event.clientX - rect.left);
+    var rect = canvas.getBoundingClientRect();
+    dx = x - rect.left;
+    dy = y - rect.top;
+    mx = x - rect.left;
+    my = y - rect.top;
 }
 
-function mup(event){
-    var rect = event.currentTarget.getBoundingClientRect(),
-        touchY = cHeight - (event.clientX - rect.left),
-        touchX = event.clientY - rect.top,
+function mup(x, y){
+    var rect = canvas.getBoundingClientRect(),
+        touchY = y - rect.top,
+        touchX = x - rect.left,
         arrayIndexX = 0,
         arrayIndexY = 0,
         i = 0,
@@ -218,11 +216,11 @@ function mup(event){
     drawTable();
 }
 
-function mmove(event){
+function mmove(x, y){
     if (drag){
-        var rect = event.currentTarget.getBoundingClientRect();
-        x = event.clientY - rect.top;
-        y = cHeight - (event.clientX - rect.left);
+        var rect = canvas.getBoundingClientRect();
+        x = x - rect.left;
+        y = y - rect.top;
         scroll += x - mx;
         if (scroll > 0) scroll = 0;
         if (scroll < -columnWidth * 76 + cWidth - 2 * offsetX) scroll = -columnWidth * 76 + cWidth - 2 * offsetX;
@@ -232,8 +230,8 @@ function mmove(event){
     }
 }
 
-function mwheel(e){
-    var delta = columnWidth * (e.wheelDelta * (0.0002));
+function mwheel(d){
+    var delta = columnWidth * (d * (0.0002));
     columnWidth += 2 * delta
     if (columnWidth < 10) columnWidth = 10;
     if (columnWidth > 100) columnWidth = 50;
@@ -246,8 +244,8 @@ function mwheel(e){
 window.onresize = function(e){
 	canvas.width = window.innerWidth;
 	canvas.height = window.innerHeight - 100;
-	cHeight = window.innerWidth;
-	cWidth = window.innerHeight - 100;
+	cHeight = window.innerHeight - 100;
+	cWidth = window.innerWidth;
     setColumnWidth();
     setRowWidth();
     drawTable();
@@ -266,38 +264,56 @@ function begin() {
     cHeight = canvas.height;
     
 	canvas.addEventListener('mousewheel',function(event){
-		mwheel(event);
+		mwheel(event.wheelDelta);
 		event.returnValue = false;
 		return false; 
 	}, false);
 	
-    canvas.addEventListener("mousedown", function (event) {
-        touched(canvas, c, event);
-		return false; 
-    }, false);
-    
-    canvas.addEventListener("touchstart", function (event) {
-        touched(canvas, c, event);
-		return false; 
-    }, false);
-    
 	canvas.addEventListener('mousemove',function(event){
-		mmove(event);
+		mmove(event.x, event.y);
 		return false; 
 	}, false);
 	
 	canvas.addEventListener('mouseup',function(event){
-		mup(event);
+		mup(event.x, event.y);
+		return false; 
+	}, false);
+	
+	canvas.addEventListener('mousedown',function(event){
+		event.preventDefault();
+		mdown(event.x, event.y);
 		return false; 
 	}, false);
 	
 	canvas.addEventListener('touchmove',function(event){
-		mmove(event);
+		event.preventDefault();
+		if (touches < 2){
+			for (var i = 0; i < event.touches.length; i++){
+				mmove(event.touches[i].pageX, event.touches[i].pageY);
+			}
+		} else if (event.touches.length == 2) {
+			ndist = Math.sqrt((event.touches[0].pageX - event.touches[1].pageX) * (event.touches[0].pageX - event.touches[1].pageX)+ (event.touches[0].pageY - event.touches[1].pageY) * (event.touches[0].pageY - event.touches[1].pageY))
+			if (tdist != -1){
+				mwheel(5*(ndist-tdist));
+			}
+			tdist = ndist;
+		}
 		return false; 
 	}, false);
 	
 	canvas.addEventListener('touchend',function(event){
-		mup(event);
+		event.preventDefault();
+		tdist = -1;
+		touches = 0;
+		mup();
+		return false; 
+	}, false);
+	
+	canvas.addEventListener('touchstart',function(event){
+		for (var i = 0; i < event.touches.length; i++){
+			touches++;
+			mdown(event.touches[i].pageX, event.touches[i].pageY);
+		}
 		return false; 
 	}, false);
 	
@@ -307,6 +323,7 @@ function begin() {
     booleanTable();
     window.onresize();
     loadTimetable();
+    mwheel(0);
 }
 document.addEventListener('DOMContentLoaded',domloaded,false);
 function domloaded(){

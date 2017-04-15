@@ -16,8 +16,8 @@ right.src = "Images/right.png";
 
 var bounds = {};
 bounds.x = 100;
-bounds.y = 0;
-bounds.w = 700;
+bounds.y = 100;
+bounds.w = 500;
 bounds.h = 500;
 var buttonWidth = 100;
 var res = 100;
@@ -28,6 +28,9 @@ var dx = 0;
 var dy = 0;
 var maxmag = 1;
 var drag = false;
+var zdist = -1;
+var touches = 0;
+var tdist = -1
 var max = 80;
 
 var busy = 40
@@ -304,27 +307,23 @@ function ttIndex(i){
 	return parseInt((start+(i*width)/res-24802560)/15)%672;
 }
 
-function getX(x){
-	return bounds.x + x/max*0.8*(bounds.w);
+function getX(y){
+	return bounds.y + y/max*0.8*(bounds.h);
 	//p.y = parseInt((s.time[i]-start)*bounds.h/(width - 1));
 }
 
-function mmove(e){
-	mx = e.x - canvas.getBoundingClientRect().left;
-	my = e.y - canvas.getBoundingClientRect().top;
-	if (e.buttons == 0) {
-	}
+function mmove(x, y){
+	mx = x - canvas.getBoundingClientRect().left;
+	my = y - canvas.getBoundingClientRect().top;
 	if (drag) {
 		if (but == -1) {
-			var x = e.x - canvas.getBoundingClientRect().left - dx;
-			var y = e.y - canvas.getBoundingClientRect().top - dy;
-			dx = e.x - canvas.getBoundingClientRect().left;
-			dy = e.y - canvas.getBoundingClientRect().top;
-			start = start - y*(width - 1)/canvas.height;
+			start = start - (mx-dx)*(width - 1)/canvas.width;
+			dx = mx;
+			dy = my;
 		} else {
 			var newbut;
-			if (mx > bounds.x + bounds.w){
-				newbut = parseInt(5 * my / canvas.height);
+			if (my <= buttonWidth){
+				newbut = parseInt(5 * mx / canvas.width);
 			} else {
 				newbut = -1;
 			}
@@ -337,14 +336,14 @@ function mmove(e){
 	draw();
 }
 
-function mdown(e){
+function mdown(x, y){
 	drag = true;
     
-	dx = e.x - canvas.getBoundingClientRect().left;
-	dy = e.y - canvas.getBoundingClientRect().top;
+	dx = x - canvas.getBoundingClientRect().left;
+	dy = y - canvas.getBoundingClientRect().top;
 	
-	if (dx > bounds.x + bounds.w){
-		but = parseInt(5 * dy / canvas.height);
+	if (my <= buttonWidth){
+		but = parseInt(5 * dx / canvas.width);
 		if (but == 2) advice = !advice;
 	} else {
 		but = -1;
@@ -353,32 +352,33 @@ function mdown(e){
 	draw();
 }
 
-function mup(e){
+function mup(){
 	drag = false;
 	but = -1;
 }
 
-function mout(e){
+function mout(x, y){
 	mx = -1;
 	my = -1;
 	drag = false;
 	but = -1;
 }
 
-function mwheel(e){
-	var delta = width * (e.wheelDelta * (-0.0002));
+function mwheel(d){
+	var delta = width * (d * (-0.0002));
 	start = start - delta;
 	width = width + 2 * delta;
 	draw();
 }
 
 window.onresize = function(e){
+	
 };
 
 function draw(){
-	bounds.y = 0;
-	bounds.h = canvas.height;
-	bounds.w = canvas.width - bounds.x - buttonWidth;
+	bounds.x = 0;
+	bounds.h = canvas.height - bounds.y - buttonWidth;
+	bounds.w = canvas.width;
 	c.clearRect(0, 0, canvas.width, canvas.height);
 	c.fillStyle = "#fff";
 	c.fillRect(0, 0, canvas.width, canvas.height);
@@ -403,19 +403,19 @@ function draw(){
 				if ( count == 0){
 					if (lastX >= 0){
 						if (advice && lastX < getX(busy) && timetable[ttIndex(i-1)] && timetable[ttIndex(i)]){
-							c.fillRect(bounds.x, (i - 1) * canvas.height / res, bounds.w, canvas.height / res)
+							c.fillRect((i - 1) * canvas.width / res, buttonWidth, canvas.width / res, bounds.h);
 						}
-						c.moveTo(lastX, (i - 1) * canvas.height / res);
-						c.lineTo(lastX, i * canvas.height / res);
+						c.moveTo((i - 1) * canvas.width / res, canvas.height - lastX);
+						c.lineTo(i * canvas.width / res, canvas.height - lastX);
 					}
 				} else {
 					x = getX(x / count);
 					if (lastX >= 0){
 						if (advice && (lastX+x)/2.0 < getX(busy) && timetable[ttIndex(i-1)] && timetable[ttIndex(i)]){
-							c.fillRect(bounds.x, (i - 1) * canvas.height / res, bounds.w, canvas.height / res)
+							c.fillRect((i - 1) * canvas.width / res, buttonWidth, canvas.width / res, bounds.h);
 						}
-						c.moveTo(lastX, (i - 1) * canvas.height / res);
-						c.lineTo(x, i * canvas.height / res);
+						c.moveTo((i - 1) * canvas.width / res, canvas.height - lastX);
+						c.lineTo(i * canvas.width / res, canvas.height - x);
 					}
 					lastX = x;
 				}
@@ -444,14 +444,14 @@ function draw(){
 			if (j + 1 < s.length){
 				if ( count == 0){
 					if (lastX >= 0){
-						c.moveTo(lastX, (i - 1) * canvas.height / res);
-						c.lineTo(lastX, i * canvas.height / res);
+						c.moveTo((i - 1) * canvas.width / res, canvas.height - lastX);
+						c.lineTo(i * canvas.width / res, canvas.height - lastX);
 					}
 				} else {
 					x = getX(x / count);
 					if (lastX >= 0){
-						c.moveTo(lastX, (i - 1) * canvas.height / res);
-						c.lineTo(x, i * canvas.height / res);
+						c.moveTo((i - 1) * canvas.width / res, canvas.height - lastX);
+						c.lineTo(i * canvas.width / res, canvas.height - x);
 					}
 					lastX = x;
 				}
@@ -461,62 +461,133 @@ function draw(){
 	
 	c.stroke();
 	
-	c.drawImage(left, bounds.x + bounds.w, 0, buttonWidth, canvas.height / 5);
-	c.drawImage(zout, bounds.x + bounds.w, canvas.height / 5, buttonWidth, canvas.height / 5);
-	c.drawImage(adv, bounds.x + bounds.w, 2 * canvas.height / 5, buttonWidth, canvas.height / 5);
-	c.drawImage(zin, bounds.x + bounds.w, 3 * canvas.height / 5, buttonWidth, canvas.height / 5);
-	c.drawImage(right, bounds.x + bounds.w, 4 * canvas.height / 5, buttonWidth, canvas.height / 5);
-	
+	c.drawImage(left, 0 * canvas.width / 5, 0, canvas.width / 5,  buttonWidth);
+	c.drawImage(zout, 1 * canvas.width / 5, 0, canvas.width / 5,  buttonWidth);
+	c.drawImage(adv, 2 * canvas.width / 5, 0, canvas.width / 5,  buttonWidth);
+	c.drawImage(zin, 3 * canvas.width / 5, 0, canvas.width / 5,  buttonWidth);
+	c.drawImage(right, 4 * canvas.width / 5, 0, canvas.width / 5,  buttonWidth);
 	
 	c.beginPath();
-	c.moveTo(bounds.x + bounds.w, 0);
-	c.lineTo(bounds.x + bounds.w, canvas.height);
+	c.moveTo(0, buttonWidth);
+	c.lineTo(canvas.width, buttonWidth);
 	for (var i = 1; i < 5; i++){
-		c.moveTo(bounds.x + bounds.w, i * canvas.height / 5);
-		c.lineTo(canvas.width, i * canvas.height / 5);
+		c.moveTo(i * canvas.width / 5, 0);
+		c.lineTo(i * canvas.width / 5, buttonWidth);
 	}
 	c.stroke();
 	
 	c.beginPath();
 	
-	c.moveTo(bounds.x, 0);
-	c.lineTo(bounds.x, canvas.height);
+	c.moveTo(0, canvas.height-(bounds.y));
+	c.lineTo(canvas.width, canvas.height-(bounds.y));
 	
 	c.stroke();
+	var fsize = parseInt(bounds.y/4);
+	c.font = fsize+"px Tahoma";
+	if (width < 60*6){
+		//hourly
+		for (var i = start - width / 4 - ((start - width / 4) % (60)); i < start + width * 5 / 4; i+= 60){
+			var x = ((i - start) * canvas.width) / width;
+			c.lineWidth = 2;
+			c.strokeStyle = "#000";
+			c.setLineDash([5, 3]);
+			c.beginPath();
+			c.moveTo(bounds.x + x, buttonWidth);
+			c.lineTo(bounds.x + x, buttonWidth + bounds.h)
+			c.stroke();
+			c.setLineDash([]);
+			c.fillStyle = "#000";
+			var days = ["Thursday", "Friday", "Saturday", "Sunday", "Monday", "Tuesday", "Wednesday"];
+			var time = ["Midnight", "1 AM", "2 AM", "3 AM", "4 AM", "5 AM", "6 AM", "7 AM", "8 AM", "9 AM", "10 AM", "11 AM", "Noon", "1 PM", "2 PM", "3 PM", "4 PM", "5 PM", "6 PM", "7 PM", "8 PM", "9 PM", "10 PM", "11 PM"]
+			c.fillText(days[parseInt(i/(60*24))%7], bounds.x + x + 10, buttonWidth + fsize + 4);
+			c.fillText(time[parseInt(i/(60))%24], bounds.x + x + 10, buttonWidth + 2.2 * fsize + 4);
+		}
+	} else if (width < 60*18){
+		for (var i = start - width / 4 - ((start - width / 4) % (60*3)); i < start + width * 5 / 4; i+= 60*3){
+			var x = ((i - start) * canvas.width) / width;
+			c.lineWidth = 2;
+			c.strokeStyle = "#000";
+			c.setLineDash([5, 3]);
+			c.beginPath();
+			c.moveTo(bounds.x + x, buttonWidth);
+			c.lineTo(bounds.x + x, buttonWidth + bounds.h)
+			c.stroke();
+			c.setLineDash([]);
+			c.fillStyle = "#000";
+			var days = ["Thursday", "Friday", "Saturday", "Sunday", "Monday", "Tuesday", "Wednesday"];
+			var time = ["Midnight", "Night", "Dawn", "Morning", "Noon", "Afternoon", "Evening", "Dusk"]
+			c.fillText(days[parseInt(i/(60*24))%7], bounds.x + x + 10, buttonWidth + fsize + 4);
+			c.fillText(time[parseInt(i/(60*3))%8], bounds.x + x + 10, buttonWidth + 2.2 * fsize + 4);
+		}
+	} else if (width < 60*60){
+		// 12 hourly
+		for (var i = start - width / 4 - ((start - width / 4) % (60*12)); i < start + width * 5 / 4; i+= 60*12){
+			var x = ((i - start) * canvas.width) / width;
+			c.lineWidth = 2;
+			c.strokeStyle = "#000";
+			c.setLineDash([5, 3]);
+			c.beginPath();
+			c.moveTo(bounds.x + x, buttonWidth);
+			c.lineTo(bounds.x + x, buttonWidth + bounds.h)
+			c.stroke();
+			c.setLineDash([]);
+			c.fillStyle = "#000";
+			var days = ["Thursday", "Friday", "Saturday", "Sunday", "Monday", "Tuesday", "Wednesday"];
+			var time = ["Midnight", "Noon"]
+			c.fillText(days[parseInt(i/(60*24))%7], bounds.x + x + 10, buttonWidth + fsize + 4);
+			c.fillText(time[parseInt(i/(60*12))%2], bounds.x + x + 10, buttonWidth + 2.2 * fsize + 4);
+		}
+	} else if ((60*24 * canvas.width) / width > c.measureText("Wednesday").width){
+		// daily
+		for (var i = start - width / 4 - ((start - width / 4) % (60*24)); i < start + width * 5 / 4; i+= 60*24){
+			var x = ((i - start) * canvas.width) / width;
+			c.lineWidth = 2;
+			c.strokeStyle = "#000";
+			c.setLineDash([5, 3]);
+			c.beginPath();
+			c.moveTo(bounds.x + x, buttonWidth);
+			c.lineTo(bounds.x + x, buttonWidth + bounds.h)
+			c.stroke();
+			c.setLineDash([]);
+			c.fillStyle = "#000";
+			var days = ["Thursday", "Friday", "Saturday", "Sunday", "Monday", "Tuesday", "Wednesday"];
+			c.fillText(days[parseInt(i/(60*24))%7], bounds.x + x + 10, buttonWidth + fsize + 4);
+		}
+	}
 	
 	c.fillStyle = "#000";
-	var fsize = parseInt(bounds.x/4);
+	var fsize = parseInt(bounds.y/4);
 	c.font = fsize+"px Tahoma";
-	var date = (new Date((start)*60000)).toDateString().substr(4, 100);
-	var time = (new Date((start)*60000)).toTimeString().substr(0, 5);
-	c.save();
-	c.translate(bounds.x - fsize + 2, 0);
-	c.rotate(Math.PI / 2);
-	c.fillText(date, 10, 10);
-	c.fillText(time, (c.measureText(date).width - c.measureText(time).width)/2 + 10, fsize + 20);
+	var date = (new Date((start+24*60)*60000)).toDateString().substr(4, 100);
+	var time = (new Date((start+24*60)*60000)).toTimeString().substr(0, 5);
+	//c.save();
+	//c.translate(bounds.x - fsize + 2, 0);
+	//c.rotate(Math.PI / 2);
+	c.fillText(date, 10, canvas.height - (bounds.y - fsize + 2 - 10));
+	c.fillText(time, (c.measureText(date).width - c.measureText(time).width)/2 + 10, canvas.height - (bounds.y - fsize + 2 - fsize - 20));
 	c.restore();
 	date = (new Date((start+width)*60000)).toDateString().substr(4, 100);
 	time = (new Date((start+width)*60000)).toTimeString().substr(0, 5);
-	c.save();
-	c.translate(bounds.x - fsize + 2, canvas.height - c.measureText(date).width);
-	c.rotate(Math.PI / 2);
-	c.fillText(date, -10, 10);
-	c.fillText(time, (c.measureText(date).width - c.measureText(time).width)/2 - 10, fsize + 20);
-	c.restore();
-	fsize = parseInt(bounds.x/2);
+	//c.save();
+	//c.translate(bounds.x - fsize + 2, canvas.height - c.measureText(date).width);
+	//c.rotate(Math.PI / 2);
+	c.fillText(date, canvas.width - c.measureText(date).width - 10, canvas.height - (bounds.y - fsize + 2 - 10));
+	c.fillText(time, canvas.width - c.measureText(date).width + (c.measureText(date).width - c.measureText(time).width)/2 - 10, canvas.height - (bounds.y - fsize + 2 - fsize - 20));
+	//c.restore();
+	fsize = parseInt(bounds.y/2);
  	c.font = fsize+"px Tahoma";
  	var text = "Empty";
- 	c.save();
- 	c.translate(bounds.x + 20, 10);
- 	c.rotate(Math.PI / 2);
- 	c.fillText(text, 0, 0);
- 	c.restore();
+ 	//c.save();
+ 	//c.translate(bounds.x + 20, 10);
+ 	//c.rotate(Math.PI / 2);
+ 	c.fillText(text, 10, canvas.height - (bounds.y + 20));
+ 	//c.restore();
  	text = "Full";
-	c.save();
- 	c.translate(bounds.x + bounds.w - fsize, 10);
- 	c.rotate(Math.PI / 2);
- 	c.fillText(text, 0, 0);
-	c.restore();
+	//c.save();
+ 	//c.translate(bounds.x + bounds.w - fsize, 10);
+ 	//c.rotate(Math.PI / 2);
+ 	c.fillText(text, 10, canvas.height - (bounds.y + bounds.h - fsize));
+	//c.restore();
 }
 
 function clock(){
@@ -550,43 +621,61 @@ function begin(){
 	c.lineWidth = 1.5;
 	
 	canvas.addEventListener('mousewheel',function(event){
-		mwheel(event);
+		mwheel(event.wheelDelta);
 		event.returnValue = false;
 		return false; 
 	}, false);
 	
 	canvas.addEventListener('mousemove',function(event){
-		mmove(event);
+		mmove(event.x, event.y);
 		return false; 
 	}, false);
 	
 	canvas.addEventListener('mouseup',function(event){
-		mup(event);
+		mup(event.x, event.y);
 		return false; 
 	}, false);
 	
 	canvas.addEventListener('mousedown',function(event){
-		mdown(event);
+		event.preventDefault();
+		mdown(event.x, event.y);
 		return false; 
 	}, false);
 	
 	canvas.addEventListener('touchmove',function(event){
-		mmove(event);
+		event.preventDefault();
+		if (touches < 2){
+			for (var i = 0; i < event.touches.length; i++){
+				mmove(event.touches[i].pageX, event.touches[i].pageY);
+			}
+		} else if (event.touches.length == 2) {
+			ndist = Math.sqrt((event.touches[0].pageX - event.touches[1].pageX) * (event.touches[0].pageX - event.touches[1].pageX)+ (event.touches[0].pageY - event.touches[1].pageY) * (event.touches[0].pageY - event.touches[1].pageY))
+			if (tdist != -1){
+				mwheel(5*(ndist-tdist));
+			}
+			tdist = ndist;
+		}
 		return false; 
 	}, false);
 	
 	canvas.addEventListener('touchend',function(event){
-		mup(event);
+		event.preventDefault();
+		tdist = -1;
+		touches = 0;
+		mup();
 		return false; 
 	}, false);
 	
 	canvas.addEventListener('touchstart',function(event){
-		mdown(event);
+		for (var i = 0; i < event.touches.length; i++){
+			touches++;
+			mdown(event.touches[i].pageX, event.touches[i].pageY);
+		}
 		return false; 
 	}, false);
 	
 	canvas.addEventListener('mouseout',function(event){
-		mout(event);
+		mout(event.x, event.y);
 		return false; 
 	}, false);
 	

@@ -99,3 +99,12 @@ input {
   padding: 16px 32px;
   margin-bottom: 16px;
 }
+
+.answer label{
+  color: #000;
+  display: block;
+  margin-left: 64px;
+  margin-right: 64px;
+  margin-top: 32px;
+  font-size: 30px;
+}

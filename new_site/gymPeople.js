@@ -13,7 +13,7 @@ function update(){
 			}
 			else if (result > 50) {
 				document.getElementById("busyness").src = "Images/RelativelyBusy.png";
-				txtBusyness = "Relatively Busy";
+				txtBusyness = "Very Busy";
 			}
 			else if (result > 40) {
 				document.getElementById("busyness").src = "Images/Busy.png";
