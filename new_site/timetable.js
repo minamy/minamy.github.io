@@ -30,7 +30,7 @@ function drawVerticalLine() {
     var i;
     c.beginPath();
     var zoom = columnWidth < 30 ? columnWidth < 15 ? 4 : 2 : 1;
-    for (i = 0; i <= rows+zoom; i += zoom) {
+    for (i = 0; i <= rows+zoom+4; i += zoom) {
         if (i < 1 || i > 3){
             c.moveTo(i*columnWidth+offsetX + scroll, offsetY);
             c.lineTo(i*columnWidth+offsetX + scroll, cHeight - offsetY);
@@ -184,10 +184,10 @@ function mdown(x, y) {
     my = y - rect.top;
 }
 
-function mup(x, y){
+function mup(){
     var rect = canvas.getBoundingClientRect(),
-        touchY = y - rect.top,
-        touchX = x - rect.left,
+        touchY = my,
+        touchX = mx,
         arrayIndexX = 0,
         arrayIndexY = 0,
         i = 0,
