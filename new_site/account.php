@@ -22,16 +22,14 @@
     $count1 = mysqli_num_rows($result1);
     $query2 = "SELECT `Username`, `Email`, `Password` FROM `User` WHERE `Email`='$name' and `Password`='$password'";
     $result2 = mysqli_query($conn, $query2);
-    $count2 = mysqli_num_rows($result2);
-    $email = mysqli_fetch_object($result2);
-    $email = $email->Email;
+    $count2 = mysqli_fetch_all($result2);
+    $result= $result1;
 
     if ($count1 == 1) {
         $_SESSION['username'] = $name;
         $message = "success";
-        $result= $result1;
-    } elseif ($count2 == 1) {
-        $_SESSION['username'] = $email;
+    } elseif (sizeof($count2) == 1) {
+        $_SESSION['username'] = $count2[0][0];
         $message = "success";
         $result = $result2;
     } else {

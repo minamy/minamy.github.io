@@ -461,11 +461,11 @@ function draw(){
 	
 	c.stroke();
 	
-	c.drawImage(left, 0 * canvas.width / 5, 0, canvas.width / 5,  buttonWidth);
-	c.drawImage(zout, 1 * canvas.width / 5, 0, canvas.width / 5,  buttonWidth);
-	c.drawImage(adv, 2 * canvas.width / 5, 0, canvas.width / 5,  buttonWidth);
-	c.drawImage(zin, 3 * canvas.width / 5, 0, canvas.width / 5,  buttonWidth);
-	c.drawImage(right, 4 * canvas.width / 5, 0, canvas.width / 5,  buttonWidth);
+	c.drawImage(left, 1 * canvas.width / 10 - buttonWidth / 2, 0, buttonWidth,  buttonWidth);
+	c.drawImage(zout, 3 * canvas.width / 10 - buttonWidth / 2, 0, buttonWidth,  buttonWidth);
+	c.drawImage(adv, 5 * canvas.width / 10 - buttonWidth / 2, 0, buttonWidth,  buttonWidth);
+	c.drawImage(zin, 7* canvas.width / 10 - buttonWidth / 2, 0, buttonWidth,  buttonWidth);
+	c.drawImage(right, 9 * canvas.width / 10 - buttonWidth / 2, 0, buttonWidth,  buttonWidth);
 	
 	c.beginPath();
 	c.moveTo(0, buttonWidth);
