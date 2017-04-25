@@ -71,9 +71,9 @@ function domloaded() {
                 }
             } else {
                 if (Math.abs(busy.sbusy-busy.ebusy) < 20){
-                    ans = ans + "The gym "+gShould()+" be " + getText(busy.busy) + ". "+isBusy(busy.busy)?nAdvice():pAdvice();
+                    ans = ans + "The gym "+gShould()+" be " + getText(busy.busy) + ". "+(isBusy(busy.busy)?nAdvice():pAdvice());
                 } else {
-                    ans = ans + "The hour at the gym starts out "+getText(busy.sbusy)+" and ends "+getText(busy.ebusy)+". "+isBusy(busy.busy)?nAdvice():pAdvice();
+                    ans = ans + "The hour at the gym starts out "+getText(busy.sbusy)+" and ends "+getText(busy.ebusy)+". "+(isBusy(busy.busy)?nAdvice():pAdvice());
                 }
             }
             a.textContent = ans;
