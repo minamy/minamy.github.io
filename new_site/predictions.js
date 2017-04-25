@@ -47,40 +47,43 @@ function domloaded() {
                 if (day.search(days[d]) != -1) break;
                 d++;
             }
-            var h = parseInt(hour.match(/[0-9]+/)[0])+(hour.search("pm")==-1?0:12);
-            //var now = (new Date()*1+60000*60)/(60000*60*24);
-            var now = (24849891.818439715/(60*24));
-            var cd = now % 7
-            if (d < cd) d += 7;
-            var time = (now - cd + d + h/24.0)*24*60;
-            var busy = getBusy(time);
-            var free = getFree(time);
-            if (free){
-                if (free[0]&&free[1]&&free[2]&&free[3]){
-                    if (isBusy(busy.busy)){
-                        ans = ans + "You are free at this time. Unfortunatetly, the gym "+gShould()+" be " + getText(busy.busy)+".";
+            var hsearch =hour.match(/[0-9]+/);
+            if (hsearch != null && hsearch.length > 0 && d < 7){
+                var h = parseInt(hsearch[0])+(hour.search("pm")==-1?0:12);
+                //var now = (new Date()*1+60000*60)/(60000*60*24);
+                var now = (24849891.818439715/(60*24));
+                var cd = now % 7
+                if (d < cd) d += 7;
+                var time = (now - cd + d + h/24.0)*24*60;
+                var busy = getBusy(time);
+                var free = getFree(time);
+                if (free){
+                    if (free[0]&&free[1]&&free[2]&&free[3]){
+                        if (isBusy(busy.busy)){
+                            ans = ans + "You are free at this time. Unfortunatetly, the gym "+gShould()+" be " + getText(busy.busy)+".";
+                        } else {
+                            ans = ans + "You are free and the gym "+gShould()+" be " + getText(busy.busy)+". "+pAdvice();
+                        }
                     } else {
-                        ans = ans + "You are free and the gym "+gShould()+" be " + getText(busy.busy)+". "+pAdvice();
+                        if (isBusy(busy.busy)){
+                            ans = ans + "The gym "+gShould()+" be " + getText(busy.busy)+". "+"You aren't free at this time anyway so it doesn't matter.";
+                        } else {
+                            ans = ans + "The gym "+gShould()+" be " + getText(busy.busy)+". "+"This would be a good time to go to the gym if you were free."
+                        }
                     }
                 } else {
-                    if (isBusy(busy.busy)){
-                        ans = ans + "The gym "+gShould()+" be " + getText(busy.busy)+". "+"You aren't free at this time anyway so it doesn't matter.";
+                    if (Math.abs(busy.sbusy-busy.ebusy) < 20){
+                        ans = ans + "The gym "+gShould()+" be " + getText(busy.busy) + ". "+(isBusy(busy.busy)?nAdvice():pAdvice());
                     } else {
-                        ans = ans + "The gym "+gShould()+" be " + getText(busy.busy)+". "+"This would be a good time to go to the gym if you were free."
+                        ans = ans + "The hour at the gym starts out "+getText(busy.sbusy)+" and ends "+getText(busy.ebusy)+". "+(isBusy(busy.busy)?nAdvice():pAdvice());
                     }
                 }
-            } else {
-                if (Math.abs(busy.sbusy-busy.ebusy) < 20){
-                    ans = ans + "The gym "+gShould()+" be " + getText(busy.busy) + ". "+(isBusy(busy.busy)?nAdvice():pAdvice());
-                } else {
-                    ans = ans + "The hour at the gym starts out "+getText(busy.sbusy)+" and ends "+getText(busy.ebusy)+". "+(isBusy(busy.busy)?nAdvice():pAdvice());
-                }
+                a.textContent = ans;
+                var c = document.getElementById("collapse");
+                c.style.height = "0px";
+                c.style.visibility = "collapse";
+                collapsed = !collapsed;
             }
-            a.textContent = ans;
-            var c = document.getElementById("collapse");
-            c.style.height = "0px";
-            c.style.visibility = "collapse";
-            collapsed = !collapsed;
         }
     });
     getHistory();

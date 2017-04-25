@@ -60,7 +60,7 @@
 					<input name="accName" id="accName" type="name" placeholder="Username" maxlength="30">
 					</label>
 					<label for ="remail">E-mail:
-					<input name="accrEmail" id="accEmail" type="email" placeholder="Repeat E-mail" maxlength="30">
+					<input name="accrEmail" id="accEmail" type="email" placeholder="E-mail" maxlength="30">
 					</label>
 					<label for ="password">Password:
 					<input name="accPassword" id="accPassword" type="password" placeholder="Password" maxlength="25">
